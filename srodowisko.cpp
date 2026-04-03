@@ -154,8 +154,6 @@ void Srodowisko::wykonajAkcje(unsigned int wiersz,
 
     Sasiedztwo sasiedztwo = ustalSasiedztwo(wiersz, kolumna);
 
-    // błąd, aktywujLokatora jest prywatny
-    // więc trzeba go zrobić publicznym
 
     ZamiarMieszkanca zamiar =
         nisza[wiersz][kolumna].aktywujLokatora(sasiedztwo);
@@ -216,7 +214,6 @@ std::string Srodowisko::doTekstu() const
     tekst += "\n Glony * : " + std::to_string(liczba(GLON)) + "\n Grzyby # : " + std::to_string(liczba(GRZYB)) + "\nBakterie @ : " + std::to_string(liczba(BAKTERIA)) + "\n Martwe + : " + std::to_string(liczba(TRUP)) + '\n';
 
     return tekst;
-    // kolejny błąd, zabrakło nawiasu zamykającego
 }
 
 Srodowisko::Srodowisko(unsigned int _wiersze,

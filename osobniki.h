@@ -1,3 +1,4 @@
+#pragma once
 #include "organizm.h"
 #include "mieszkaniec.h"
 #include "generatorLosowy.h"

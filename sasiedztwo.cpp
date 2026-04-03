@@ -91,9 +91,7 @@ void Sasiedztwo::
 {
     if (polozenie == PG || polozenie == P || polozenie == PD)
         kolumna++;
-    // błąd, brak operatora logicznego
-    // else if (polozenie == LG || polozenie == L | polozenie == LD)
-    else if (polozenie == LG || polozenie == L || polozenie == LD)
+    else if (polozenie == LG || polozenie == L | polozenie == LD)
         kolumna--;
 
     if (polozenie == LG || polozenie == G || polozenie == PG)

@@ -4,18 +4,6 @@
 #include <vector>
 using namespace std;
 
-/*
-https://gist.github.com/JBlond/2fea43a3049b38287e5e9cefc87b2124
-\e[0;31m	Red
-\e[0;32m	Green
-\e[0;33m	Yellow
-\e[0;34m	Blue
-\e[0;35m	Purple
-\e[0;36m	Cyan
-\e[0;37m	White
-\e[0m	Reset
-*/
-
 enum RodzajMieszkanca
 {
     GLON,

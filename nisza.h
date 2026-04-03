@@ -16,7 +16,7 @@ public:
 
     Nisza &operator=(Nisza &innaNisza);
 
-    void przyjmijLokatora(Mieszkaniec *&lokatorBezdomny);
+    void przyjmijLokatora(Mieszkaniec *lokatorBezdomny);
 
     Mieszkaniec *oddajLokatora();
 
@@ -32,7 +32,6 @@ public:
     char jakiSymbol() const;
 
 private:
-    // friend class Srodowisko;
     friend void Srodowisko::wykonajAkcje(unsigned int wiersz,unsigned int kolumna);
     ZamiarMieszkanca aktywujLokatora(
         Sasiedztwo sasiedztwo)

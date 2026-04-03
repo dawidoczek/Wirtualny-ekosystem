@@ -1,5 +1,4 @@
 #include "generatorLosowy.h"
-#include <algorithm>
 
 std::random_device GeneratorLosowy::device;
 
@@ -33,8 +32,7 @@ int GeneratorLosowy::losujOdZeraDo(int max)
 {
 
 
-    // jak nie ustawiłem tu max -1 to wywalało seg fault
-    std::uniform_int_distribution<int> dist(0, max - 1);
+    std::uniform_int_distribution<int> dist(0, max);
     return dist(GeneratorLosowy::device);
 }
 
@@ -44,12 +42,9 @@ WektorIndeksow2D GeneratorLosowy::indeksyLosowe(unsigned int wiersze, unsigned i
     for (unsigned int w = 0; w < wiersze; w++)
         for (unsigned int k = 0; k < kolumny; k++)
             indeksy.push_back(Indeks2D(w, k));
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-// depraction
+
     std::random_shuffle(indeksy.begin(), indeksy.end(),
                         GeneratorLosowy::losujOdZeraDo);
-#pragma clang diagnostic pop
 
     return indeksy;
 }

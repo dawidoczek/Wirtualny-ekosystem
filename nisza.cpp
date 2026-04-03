@@ -30,14 +30,10 @@ Nisza &Nisza::operator=(Nisza &innaNisza)
     innaNisza.lokator = tmp;
     return *this;
 }
-// tutaj jest błąd a nawet 2, brak nawiasu zamykającego i
-// chcemy zmienic oryginalny wskaznik, a nie jego kopie, więc powinno być Mieszkaniec *&lokatorBezdomny
-void Nisza::przyjmijLokatora(Mieszkaniec *&lokatorBezdomny)
-// void Nisza::przyjmijLokatora(Mieszkaniec *lokatorBezdomny
+void Nisza::przyjmijLokatora(Mieszkaniec *lokatorBezdomny)
 {
     if (!zajeta())
     {
-        // ustawia nam null ptr na kopie, a nie orginal
         lokator = lokatorBezdomny;
         lokatorBezdomny = nullptr;
     }
