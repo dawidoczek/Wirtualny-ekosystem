@@ -19,6 +19,10 @@ Prosty projekt symulacji ekosystemu na siatce 2D zrealizowany w ramach laborator
 - kompilator C++ (`g++` lub `clang++`)
 - `make`
 
+## instalowanie
+W konsoli wpisz 
+- `git clone https://github.com/dawidoczek/Wirtualny-ekosystem.git`
+
 ## Budowanie
 
 W katalogu projektu uruchom:
