@@ -1,8 +1,5 @@
 #include "osobniki.h"
-#include "generatorLosowy.h"
-#include "sasiedztwo.h"
 
-static const UstawieniaSymulacji &UST = UstawieniaSymulacji::pobierzUstawienia();
 
 Glon::Glon() : Organizm(GeneratorLosowy::
                             losujPomiedzy(UST.glonZycieMin, UST.glonZycieMax),
