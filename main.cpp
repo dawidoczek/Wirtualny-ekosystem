@@ -6,33 +6,6 @@ using namespace std;
 #include "nisza.h"
 #include "srodowisko.h"
 
-
-string nazwaRodzaju(RodzajMieszkanca rodzaj)
-{
-    switch (rodzaj)
-    {
-    case GLON:
-        return "GLON";
-    case GRZYB:
-        return "GRZYB";
-    case BAKTERIA:
-        return "BAKTERIA";
-    case PUSTKA:
-        return "PUSTKA";
-    case SCIANA:
-        return "ŚCIANA";
-    case TRUP:
-        return "TRUP";
-    case NIEZNANE:
-        return "NIEZNANE";
-    }
-}
-void wyswietl(UstawieniaSymulacji &UST)
-{
-    cout << "Znak glon:" << UST.znakGlon
-         << " zycieMin=" << UST.glonZycieMin
-         << " zycieMax=" << UST.glonZycieMax << endl;
-}
 // int main()
 // {
 //     // Srodowisko ekoSystem=Srodowisko::czytajZPliku("start.txt");
