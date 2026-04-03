@@ -2,7 +2,7 @@
 #include "osobniki.h"
 #include "generatorLosowy.h"
 
-int rysuj3d(Srodowisko ekoSystem);
+int rysuj3d(Srodowisko &ekoSystem);
 
 static void losowoRozmiesc(Srodowisko &ekoSystem,
                            unsigned int ile,
