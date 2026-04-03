@@ -1,3 +1,5 @@
+#pragma once
+#pragma once
 #include <algorithm>
 #include <random>
 #include <vector>

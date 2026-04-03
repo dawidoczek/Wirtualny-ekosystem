@@ -1,5 +1,6 @@
 #include "generatorLosowy.h"
 #include <algorithm>
+#include <iostream>
 
 std::random_device GeneratorLosowy::device;
 
@@ -33,8 +34,11 @@ int GeneratorLosowy::losujOdZeraDo(int max)
 {
 
 
-    // jak nie ustawiłem tu max -1 to wywalało seg fault
-    std::uniform_int_distribution<int> dist(0, max - 1);
+    // błąd, losujOdZeraDo(5) powinno zwracać 0, 1, 2, 3 lub 4, a nie 5
+    // std::random_shuffle zakłada że funkcja zwraca wartosc 
+    // z zakresu [0, max), a nie [0, max], więc powinno być max-1
+    // std::uniform_int_distribution<int> dist(0, max);
+    std::uniform_int_distribution<int> dist(0, max-1);
     return dist(GeneratorLosowy::device);
 }
 

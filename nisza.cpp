@@ -1,7 +1,7 @@
 #include "nisza.h"
 #include "srodowisko.h"
 
-Nisza::Nisza() : lokator(nullptr) {}
+Nisza::Nisza() : lokator(nullptr), ostatniaTuraObslugi(0) {}
 
 Nisza::Nisza(Nisza &innaNisza)
 {
@@ -10,10 +10,12 @@ Nisza::Nisza(Nisza &innaNisza)
     {
         lokator = innaNisza.lokator;
         innaNisza.lokator = nullptr;
+        ostatniaTuraObslugi = innaNisza.ostatniaTuraObslugi;
     }
     else
     {
         lokator = nullptr;
+        ostatniaTuraObslugi = innaNisza.ostatniaTuraObslugi;
     }
 }
 
@@ -28,18 +30,23 @@ Nisza &Nisza::operator=(Nisza &innaNisza)
     Mieszkaniec *tmp = lokator;
     lokator = innaNisza.lokator;
     innaNisza.lokator = tmp;
+    unsigned long t = ostatniaTuraObslugi;
+    ostatniaTuraObslugi = innaNisza.ostatniaTuraObslugi;
+    innaNisza.ostatniaTuraObslugi = t;
     return *this;
 }
 // tutaj jest błąd a nawet 2, brak nawiasu zamykającego i
-// chcemy zmienic oryginalny wskaznik, a nie jego kopie, więc powinno być Mieszkaniec *&lokatorBezdomny
-void Nisza::przyjmijLokatora(Mieszkaniec *&lokatorBezdomny)
+// chcemy zmienic oryginalny wskaznik, a nie jego kopie, 
+// więc powinno być Mieszkaniec *&lokatorBezdomny
 // void Nisza::przyjmijLokatora(Mieszkaniec *lokatorBezdomny
+void Nisza::przyjmijLokatora(Mieszkaniec *&lokatorBezdomny)
 {
     if (!zajeta())
     {
         // ustawia nam null ptr na kopie, a nie orginal
         lokator = lokatorBezdomny;
         lokatorBezdomny = nullptr;
+        ostatniaTuraObslugi = Srodowisko::pobierzAktualnaTure();
     }
 }
 
@@ -75,4 +82,14 @@ char Nisza::jakiSymbol() const
                 .znakPustaNisza;
     else
         return lokator->jakiSymbol();
+}
+
+bool Nisza::juzObsluzonaWTurze() const
+{
+    return ostatniaTuraObslugi == Srodowisko::pobierzAktualnaTure();
+}
+
+void Nisza::oznaczObslugeWTurze()
+{
+    ostatniaTuraObslugi = Srodowisko::pobierzAktualnaTure();
 }

@@ -5,6 +5,13 @@
 #include "osobniki.h"
 #include "nisza.h"
 
+unsigned long Srodowisko::aktualnaTura = 0;
+
+unsigned long Srodowisko::pobierzAktualnaTure()
+{
+    return aktualnaTura;
+}
+
 Srodowisko Srodowisko::czytajZPliku(std::string nazwaPliku)
 {
     std::ifstream plik(nazwaPliku);
@@ -154,8 +161,6 @@ void Srodowisko::wykonajAkcje(unsigned int wiersz,
 
     Sasiedztwo sasiedztwo = ustalSasiedztwo(wiersz, kolumna);
 
-    // błąd, aktywujLokatora jest prywatny
-    // więc trzeba go zrobić publicznym
 
     ZamiarMieszkanca zamiar =
         nisza[wiersz][kolumna].aktywujLokatora(sasiedztwo);
@@ -187,11 +192,21 @@ void Srodowisko::wykonajAkcje(unsigned int wiersz,
 }
 void Srodowisko::wykonajKrokSymulacji()
 {
+    numerTury++;
+    aktualnaTura = numerTury;
     WektorIndeksow2D indeksyLosowe =
         GeneratorLosowy::indeksyLosowe(wiersze, kolumny);
-
+    // błąd, organizm moze wykonac kilka ruchow w jednej turze
+    // uznajmy ze bakteria na [0,0] wykona ruch na [1,1]
+    // i potem przeiterujemy przez [1,1], to wykona ona kolejną akcje
     for (Indeks2D indeks : indeksyLosowe)
+    {
+        if (nisza[indeks.wiersz][indeks.kolumna].juzObsluzonaWTurze())
+            continue;
+
+        nisza[indeks.wiersz][indeks.kolumna].oznaczObslugeWTurze();
         wykonajAkcje(indeks.wiersz, indeks.kolumna);
+    }
 }
 
 std::string Srodowisko::doTekstu() const

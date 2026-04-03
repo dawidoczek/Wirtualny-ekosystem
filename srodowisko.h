@@ -15,6 +15,8 @@ public:
 
     const unsigned int wiersze, kolumny;
     const unsigned long liczbaNisz;
+    unsigned long numerTury = 0;
+    static unsigned long aktualnaTura;
 
 private:
     Nisza **nisza;
@@ -48,4 +50,6 @@ public:
     void wykonajKrokSymulacji();
 
     std::string doTekstu() const;
+
+    static unsigned long pobierzAktualnaTure();
 };

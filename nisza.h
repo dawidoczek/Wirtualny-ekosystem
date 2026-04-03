@@ -8,6 +8,7 @@ class Nisza
 {
 private:
     Mieszkaniec *lokator;
+    unsigned long ostatniaTuraObslugi;
 
 public:
     Nisza();
@@ -30,6 +31,10 @@ public:
     bool lokatorZywy() const;
 
     char jakiSymbol() const;
+
+    bool juzObsluzonaWTurze() const;
+
+    void oznaczObslugeWTurze();
 
 private:
     // friend class Srodowisko;
