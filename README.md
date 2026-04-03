@@ -8,10 +8,14 @@ By
 Dawid Rej
 ```
 # Symulacja Ekosystemu 3D (programowanie obiektowe C++ LAB MDK )
+![kostka5_speed_1 0x](https://github.com/user-attachments/assets/412347e8-ced4-427f-acbf-c3119e53306c)
 
 
 
 Projekt symulacji ekosystemu rozwinięty do wersji 3D z interaktywną wizualizacją w terminalu.
+INSPIRACJE:
+[donut c](https://www.a1k0n.net/2011/07/20/donut-math.html)
+[cube spin](https://github.com/alt44s/cube-spin)
 
 ## Sterowanie w wizualizacji
 
