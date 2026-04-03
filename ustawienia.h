@@ -45,7 +45,9 @@ enum Polozenie
     LD = 5,
     D = 6,
     PD = 7,
-    NIGDZIE = 8
+    GORA = 8,
+    DOL = 9,
+    NIGDZIE = 10
 };
 
 class UstawieniaSymulacji

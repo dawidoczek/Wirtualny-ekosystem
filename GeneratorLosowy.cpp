@@ -57,3 +57,20 @@ WektorIndeksow2D GeneratorLosowy::indeksyLosowe(unsigned int wiersze, unsigned i
 
     return indeksy;
 }
+
+WektorIndeksow3D GeneratorLosowy::indeksyLosowe(unsigned int wiersze, unsigned int kolumny, unsigned int glebokosc)
+{
+    WektorIndeksow3D indeksy;
+    for (unsigned int w = 0; w < wiersze; w++)
+        for (unsigned int k = 0; k < kolumny; k++)
+            for (unsigned int g = 0; g < glebokosc; g++)
+                indeksy.push_back(Indeks3D(w, k, g));
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+    std::random_shuffle(indeksy.begin(), indeksy.end(),
+                        GeneratorLosowy::losujOdZeraDo);
+#pragma clang diagnostic pop
+
+    return indeksy;
+}

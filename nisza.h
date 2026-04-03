@@ -38,7 +38,7 @@ public:
 
 private:
     // friend class Srodowisko;
-    friend void Srodowisko::wykonajAkcje(unsigned int wiersz,unsigned int kolumna);
+    friend void Srodowisko::wykonajAkcje(unsigned int wiersz,unsigned int kolumna,unsigned int glebokosc);
     ZamiarMieszkanca aktywujLokatora(
         Sasiedztwo sasiedztwo)
     {

@@ -1,5 +1,6 @@
 CXX ?= g++
 CXXFLAGS ?= -Wall -Wextra -g3
+LDLIBS ?= -lncurses
 TARGET := output/main
 SOURCES := $(wildcard *.cpp)
 OBJDIR := build
@@ -10,7 +11,7 @@ OBJECTS := $(patsubst %.cpp,$(OBJDIR)/%.o,$(SOURCES))
 all: $(TARGET)
 
 $(TARGET): $(OBJECTS) | output
-	$(CXX) $(CXXFLAGS) $(OBJECTS) -o $(TARGET)
+	$(CXX) $(CXXFLAGS) $(OBJECTS) -o $(TARGET) $(LDLIBS)
 
 $(OBJDIR)/%.o: %.cpp | $(OBJDIR)
 	$(CXX) $(CXXFLAGS) -c $< -o $@

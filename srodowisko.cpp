@@ -42,7 +42,7 @@ Srodowisko Srodowisko::czytajZPliku(std::string nazwaPliku)
         }
     }
 
-    Srodowisko srodowisko(wiersze, kolumny);
+    Srodowisko srodowisko(wiersze, kolumny, 1);
 
     char glon = UstawieniaSymulacji ::pobierzUstawienia().znakGlon;
     char grzyb = UstawieniaSymulacji ::pobierzUstawienia().znakGrzyb;
@@ -59,11 +59,11 @@ Srodowisko Srodowisko::czytajZPliku(std::string nazwaPliku)
             znak = k < zapis.size() ? zapis[k] : pusta;
 
             if (znak == glon)
-                srodowisko.lokuj(new Glon(), w, k / 2);
+                srodowisko.lokuj(new Glon(), w, k / 2, 0);
             else if (znak == grzyb)
-                srodowisko.lokuj(new Grzyb(), w, k / 2);
+                srodowisko.lokuj(new Grzyb(), w, k / 2, 0);
             else if (znak == bakteria)
-                srodowisko.lokuj(new Bakteria(), w, k / 2);
+                srodowisko.lokuj(new Bakteria(), w, k / 2, 0);
         }
     }
 
@@ -73,39 +73,47 @@ Srodowisko Srodowisko::czytajZPliku(std::string nazwaPliku)
 Srodowisko::~Srodowisko()
 {
     for (unsigned int i = 0; i < wiersze; i++)
+    {
+        for (unsigned int j = 0; j < kolumny; j++)
+            delete[] nisza[i][j];
         delete[] nisza[i];
+    }
     delete[] nisza;
 }
 
 void Srodowisko::lokuj(Mieszkaniec *mieszkaniec,
-                       unsigned int wiersz, unsigned int kolumna)
+                       unsigned int wiersz, unsigned int kolumna,
+                       unsigned int g)
 {
-    if (wiersz < wiersze && kolumna < kolumny)
-        nisza[wiersz][kolumna].przyjmijLokatora(mieszkaniec);
+    if (wiersz < wiersze && kolumna < kolumny && g < glebokosc)
+        nisza[wiersz][kolumna][g].przyjmijLokatora(mieszkaniec);
 }
 
 Sasiedztwo Srodowisko::ustalSasiedztwo(
-    unsigned int wiersz, unsigned int kolumna) const
+    unsigned int wiersz, unsigned int kolumna, unsigned int g) const
 {
     Sasiedztwo sasiedztwo(SCIANA);
 
-    long wiersz1, kolumna1;
+    long wiersz1, kolumna1, g1;
 
-    for (Polozenie p : {P, PG, G, LG, L, LD, D, PD})
+    for (Polozenie p : {P, PG, G, LG, L, LD, D, PD, GORA, DOL})
     {
         wiersz1 = wiersz;
         kolumna1 = kolumna;
+        g1 = g;
 
         Sasiedztwo::
-            zmienIdeksyWgPolozenia(p, wiersz1, kolumna1);
+            zmienIdeksyWgPolozenia(p, wiersz1, kolumna1, g1);
 
         if (wiersz1 >= 0 &&
             wiersz1 < wiersze &&
             kolumna1 >= 0 &&
-            kolumna1 < kolumny)
+            kolumna1 < kolumny &&
+            g1 >= 0 &&
+            g1 < glebokosc)
         {
             sasiedztwo.okreslSasiada(p,
-                                     nisza[wiersz1][kolumna1].ktoTuMieszka());
+                                     nisza[wiersz1][kolumna1][g1].ktoTuMieszka());
         }
     }
 
@@ -118,8 +126,9 @@ unsigned long Srodowisko::
 
     for (unsigned int w = 0; w < wiersze; w++)
         for (unsigned int k = 0; k < kolumny; k++)
-            if (nisza[w][k].ktoTuMieszka() == rodzaj)
-                licznik++;
+            for (unsigned int g = 0; g < glebokosc; g++)
+                if (nisza[w][k][g].ktoTuMieszka() == rodzaj)
+                    licznik++;
 
     return licznik;
 }
@@ -128,15 +137,16 @@ bool Srodowisko::martwy()
     return liczba(GLON) + liczba(GRZYB) + liczba(BAKTERIA) == 0;
 }
 void Srodowisko::wykonajSkok(unsigned int wiersz,
-                             unsigned int kolumna)
+                             unsigned int kolumna,
+                             unsigned int g)
 {
 
-    if (!nisza[wiersz][kolumna].lokatorZywy() ||
-        nisza[wiersz][kolumna].ktoTuMieszka() == GLON)
+    if (!nisza[wiersz][kolumna][g].lokatorZywy() ||
+        nisza[wiersz][kolumna][g].ktoTuMieszka() == GLON)
         return;
 
     Sasiedztwo sasiedztwo =
-        ustalSasiedztwo(wiersz, kolumna);
+        ustalSasiedztwo(wiersz, kolumna, g);
 
     if (sasiedztwo.ile(PUSTKA) > 0)
     {
@@ -144,49 +154,50 @@ void Srodowisko::wykonajSkok(unsigned int wiersz,
         Polozenie polozenie =
             sasiedztwo.losujSasiada(PUSTKA);
 
-        unsigned int wiersz1 = wiersz, kolumna1 = kolumna;
+        unsigned int wiersz1 = wiersz, kolumna1 = kolumna, g1 = g;
 
         Sasiedztwo::zmienIdeksyWgPolozenia(polozenie,
-                                           wiersz1, kolumna1);
+                                           wiersz1, kolumna1, g1);
 
-        nisza[wiersz1][kolumna1] = nisza[wiersz][kolumna];
+        nisza[wiersz1][kolumna1][g1] = nisza[wiersz][kolumna][g];
     }
 }
 
 void Srodowisko::wykonajAkcje(unsigned int wiersz,
-                              unsigned int kolumna)
+                              unsigned int kolumna,
+                              unsigned int g)
 {
-    if (!nisza[wiersz][kolumna].lokatorZywy())
+    if (!nisza[wiersz][kolumna][g].lokatorZywy())
         return;
 
-    Sasiedztwo sasiedztwo = ustalSasiedztwo(wiersz, kolumna);
+    Sasiedztwo sasiedztwo = ustalSasiedztwo(wiersz, kolumna, g);
 
 
     ZamiarMieszkanca zamiar =
-        nisza[wiersz][kolumna].aktywujLokatora(sasiedztwo);
+        nisza[wiersz][kolumna][g].aktywujLokatora(sasiedztwo);
 
-    unsigned int wiersz1 = wiersz, kolumna1 = kolumna;
+    unsigned int wiersz1 = wiersz, kolumna1 = kolumna, g1 = g;
 
     Sasiedztwo::zmienIdeksyWgPolozenia(zamiar.gdzie,
-                                       wiersz1, kolumna1);
+                                       wiersz1, kolumna1, g1);
 
     Mieszkaniec *m = nullptr;
 
     switch (zamiar.akcja)
     {
     case NIC:
-        wykonajSkok(wiersz, kolumna);
+        wykonajSkok(wiersz, kolumna, g);
         break;
 
     case POTOMEK:
-        m = nisza[wiersz][kolumna].wypuscPotomka();
-        nisza[wiersz1][kolumna1].przyjmijLokatora(m);
+        m = nisza[wiersz][kolumna][g].wypuscPotomka();
+        nisza[wiersz1][kolumna1][g1].przyjmijLokatora(m);
         break;
 
     case POLOWANIE:
     case ROZKLAD:
-        m = nisza[wiersz1][kolumna1].oddajLokatora();
-        nisza[wiersz][kolumna].przyjmijZdobycz(m);
+        m = nisza[wiersz1][kolumna1][g1].oddajLokatora();
+        nisza[wiersz][kolumna][g].przyjmijZdobycz(m);
         break;
     }
 }
@@ -194,18 +205,18 @@ void Srodowisko::wykonajKrokSymulacji()
 {
     numerTury++;
     aktualnaTura = numerTury;
-    WektorIndeksow2D indeksyLosowe =
-        GeneratorLosowy::indeksyLosowe(wiersze, kolumny);
+    WektorIndeksow3D indeksyLosowe =
+        GeneratorLosowy::indeksyLosowe(wiersze, kolumny, glebokosc);
     // błąd, organizm moze wykonac kilka ruchow w jednej turze
     // uznajmy ze bakteria na [0,0] wykona ruch na [1,1]
     // i potem przeiterujemy przez [1,1], to wykona ona kolejną akcje
-    for (Indeks2D indeks : indeksyLosowe)
+    for (Indeks3D indeks : indeksyLosowe)
     {
-        if (nisza[indeks.wiersz][indeks.kolumna].juzObsluzonaWTurze())
+        if (nisza[indeks.wiersz][indeks.kolumna][indeks.glebokosc].juzObsluzonaWTurze())
             continue;
 
-        nisza[indeks.wiersz][indeks.kolumna].oznaczObslugeWTurze();
-        wykonajAkcje(indeks.wiersz, indeks.kolumna);
+        nisza[indeks.wiersz][indeks.kolumna][indeks.glebokosc].oznaczObslugeWTurze();
+        wykonajAkcje(indeks.wiersz, indeks.kolumna, indeks.glebokosc);
     }
 }
 
@@ -216,13 +227,20 @@ std::string Srodowisko::doTekstu() const
                    pobierzUstawienia()
                        .znakSeparator;
 
-    for (unsigned int w = 0; w < wiersze; w++)
+    for (unsigned int g = 0; g < glebokosc; g++)
     {
-        for (unsigned int k = 0; k < kolumny; k++)
+        tekst += "Warstwa z=" + std::to_string(g) + "\n";
+
+        for (unsigned int w = 0; w < wiersze; w++)
         {
-            if (k > 0)
-                tekst += sep;
-            tekst += nisza[w][k].jakiSymbol();
+            for (unsigned int k = 0; k < kolumny; k++)
+            {
+                if (k > 0)
+                    tekst += sep;
+                tekst += nisza[w][k][g].jakiSymbol();
+            }
+
+            tekst += '\n';
         }
 
         tekst += '\n';
@@ -235,15 +253,39 @@ std::string Srodowisko::doTekstu() const
 }
 
 Srodowisko::Srodowisko(unsigned int _wiersze,
-                       unsigned int _kolumny)
+                       unsigned int _kolumny,
+                       unsigned int _glebokosc)
     : wiersze(_wiersze),
       kolumny(_kolumny),
-      liczbaNisz(_wiersze * _kolumny)
+      glebokosc(_glebokosc),
+      liczbaNisz(_wiersze * _kolumny * _glebokosc)
 {
 
-    nisza = new Nisza *[wiersze];
+    nisza = new Nisza **[wiersze];
     for (unsigned int i = 0; i < wiersze; i++)
-        nisza[i] = new Nisza[kolumny];
+    {
+        nisza[i] = new Nisza *[kolumny];
+        for (unsigned int j = 0; j < kolumny; j++)
+            nisza[i][j] = new Nisza[glebokosc];
+    }
+}
+
+char Srodowisko::symbolNiszy(unsigned int wiersz,
+                             unsigned int kolumna,
+                             unsigned int g) const
+{
+    if (wiersz >= wiersze || kolumna >= kolumny || g >= glebokosc)
+        return UstawieniaSymulacji::pobierzUstawienia().znakNieokreslony;
+    return nisza[wiersz][kolumna][g].jakiSymbol();
+}
+
+RodzajMieszkanca Srodowisko::rodzajNiszy(unsigned int wiersz,
+                                         unsigned int kolumna,
+                                         unsigned int g) const
+{
+    if (wiersz >= wiersze || kolumna >= kolumny || g >= glebokosc)
+        return NIEZNANE;
+    return nisza[wiersz][kolumna][g].ktoTuMieszka();
 }
 
 std::ostream &operator<<(std::ostream &strumien,

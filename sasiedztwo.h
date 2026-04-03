@@ -5,7 +5,7 @@ class Sasiedztwo
 {
 
 private:
-    RodzajMieszkanca sasiad[3][3];
+    RodzajMieszkanca sasiad[10];
 
     RodzajMieszkanca *elementWewnetrzny(
         Polozenie polozenie);
@@ -25,9 +25,10 @@ public:
     Polozenie losujSasiada(RodzajMieszkanca rodzaj);
 
     static void zmienIdeksyWgPolozenia(
-        Polozenie polozenie, long &wiersz, long &kolumna);
+        Polozenie polozenie, long &wiersz, long &kolumna, long &glebokosc);
 
     static void zmienIdeksyWgPolozenia(
         Polozenie polozenie, unsigned int &wiersz,
-        unsigned int &kolumna);
+        unsigned int &kolumna,
+        unsigned int &glebokosc);
 };

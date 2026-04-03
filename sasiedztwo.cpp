@@ -7,21 +7,25 @@ RodzajMieszkanca *Sasiedztwo::
     switch (polozenie)
     {
     case P:
-        return &sasiad[1][2];
+        return &sasiad[0];
     case PG:
-        return &sasiad[0][2];
+        return &sasiad[1];
     case G:
-        return &sasiad[0][1];
+        return &sasiad[2];
     case LG:
-        return &sasiad[0][0];
+        return &sasiad[3];
     case L:
-        return &sasiad[1][0];
+        return &sasiad[4];
     case LD:
-        return &sasiad[2][0];
+        return &sasiad[5];
     case D:
-        return &sasiad[2][1];
+        return &sasiad[6];
     case PD:
-        return &sasiad[2][2];
+        return &sasiad[7];
+    case GORA:
+        return &sasiad[8];
+    case DOL:
+        return &sasiad[9];
     case NIGDZIE:
         return nullptr;
     }
@@ -29,16 +33,13 @@ RodzajMieszkanca *Sasiedztwo::
 }
 Polozenie Sasiedztwo::losujPolozenie()
 {
-    unsigned short min = 0, max = 8;
+    unsigned short min = 0, max = 9;
     return static_cast<Polozenie>(GeneratorLosowy::losujPomiedzy(min, max));
 }
 Sasiedztwo::Sasiedztwo(RodzajMieszkanca rodzaj)
 {
-    for (auto i : {0, 1, 2})
-        for (auto j : {0, 1, 2})
-            sasiad[i][j] = rodzaj;
-
-    sasiad[1][1] = NIEZNANE;
+    for (int i = 0; i < 10; ++i)
+        sasiad[i] = rodzaj;
 }
 void Sasiedztwo::okreslSasiada(Polozenie polozenie, RodzajMieszkanca rodzaj)
 {
@@ -58,14 +59,9 @@ unsigned short Sasiedztwo::
 {
     unsigned short licznik = 0;
 
-    for (int i : {0, 1, 2})
-        for (int j : {0, 1, 2})
-        {
-            if (i == 1 && j == 1)
-                continue;
-            if (sasiad[i][j] == rodzaj)
-                licznik++;
-        }
+    for (int i = 0; i < 10; ++i)
+        if (sasiad[i] == rodzaj)
+            licznik++;
 
     return licznik;
 }
@@ -87,7 +83,7 @@ Polozenie Sasiedztwo::
 
 void Sasiedztwo::
     zmienIdeksyWgPolozenia(Polozenie polozenie,
-                           long &wiersz, long &kolumna)
+                           long &wiersz, long &kolumna, long &glebokosc)
 {
     if (polozenie == PG || polozenie == P || polozenie == PD)
         kolumna++;
@@ -100,16 +96,24 @@ void Sasiedztwo::
         wiersz--;
     else if (polozenie == LD || polozenie == D || polozenie == PD)
         wiersz++;
+
+    if (polozenie == GORA)
+        glebokosc++;
+    else if (polozenie == DOL)
+        glebokosc--;
 }
 void Sasiedztwo::
     zmienIdeksyWgPolozenia(Polozenie polozenie,
-                           unsigned int &wiersz, unsigned int &kolumna)
+                           unsigned int &wiersz, unsigned int &kolumna,
+                           unsigned int &glebokosc)
 {
     long w = static_cast<long>(wiersz);
     long k = static_cast<long>(kolumna);
+    long g = static_cast<long>(glebokosc);
 
-    zmienIdeksyWgPolozenia(polozenie, w, k);
+    zmienIdeksyWgPolozenia(polozenie, w, k, g);
 
     wiersz = static_cast<unsigned int>(w);
     kolumna = static_cast<unsigned int>(k);
+    glebokosc = static_cast<unsigned int>(g);
 }

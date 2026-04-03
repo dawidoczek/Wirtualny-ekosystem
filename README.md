@@ -7,75 +7,26 @@
 By
 Dawid Rej
 ```
-# Symulacja Ekosystemu (programowanie obiektowe C++ LAB MDK )
-
-<img src="https://github.com/user-attachments/assets/83519708-b42a-4dd6-a1a4-4dabc6e3964e" width="200">
-
-Prosty projekt symulacji ekosystemu na siatce 2D zrealizowany w ramach laboratoriów z Programowania Obiektowego.
+# Symulacja Ekosystemu 3D (programowanie obiektowe C++ LAB MDK )
 
 
-## Wymagania
 
-- kompilator C++ (`g++` lub `clang++`)
-- `make`
+Projekt symulacji ekosystemu rozwinięty do wersji 3D z interaktywną wizualizacją w terminalu.
 
-## Budowanie
+## Sterowanie w wizualizacji
 
-W katalogu projektu uruchom:
+- `ENTER`: wykonuje jeden krok symulacji
+- `SPACJA`: przełącza tryb auto-obrotu / tryb inspekcji
+- `Strzałki` (w trybie inspekcji): przesuwają położenie ekosystemu
+- `Shift + Strzałki` (w trybie inspekcji): obracają widok
+- `N`: włącza/wyłącza obwódkę 3D (12 krawędzi sześcianu)
+- `Q`: wyjście
 
-```bash
-make
-```
+## Co zmieniono względem projektu bazowego
 
-
-## Uruchamianie
-
-```bash
-make run
-```
-
-lub bezpośrednio:
-
-```bash
-./output/main
-```
-
-Program czyta stan początkowy z pliku `start.txt` i zapisuje przebieg do `symulacja.txt`.
-
-## 📖 Opis projektu
-
-Aplikacja symuluje zamknięte środowisko (reprezentowane jako prostokątna siatka nisz/komórek), w którym żyją i oddziałują na siebie trzy gatunki wirtualnych organizmów:
-* **Glony (`*`)** – samożywne organizmy prowadzące fotosyntezę.
-* **Grzyby (`#`)** – każdy wie czym jest grzyb, żywi się szczątkami.
-* **Bakterie (`@`)** – organizmy drapieżne, polujące w pierwszej kolejności na glony, a w przypadku ich braku – na inne bakterie.
-* **Martwe organizmy (`+`)** – organizmy, które przekroczyły swój maksymalny wiek.
-* **Puste nisze (`_`)** – niezajęte komórki środowiska.
-
-Rozwój ekosystemu przebiega w dyskretnych krokach czasowych (turach). W każdej turze organizmy wykonują swoje funkcje życiowe na podstawie analizy swojego bezpośredniego sąsiedztwa (8 sąsiednich komórek).
-
-## ✨ Funkcjonalności
-
-* **Cykl życia organizmów:** Każdy organizm rodzi się, starzeje, odżywia, rozmnaża, porusza i ostatecznie umiera.
-* **Złożone interakcje:** Organizmy reagują na otoczenie w zależności od swojego gatunku (np. bakterie szukają ofiar, grzyby szukają martwej materii organicznej, głodne organizmy się nie rozmnażają).
-* **Losowość:** Wykorzystanie generatora liczb pseudolosowych (biblioteka `<random>`) do decydowania o ruchu, maksymalnym wieku organizmu czy kierunku rozmnażania.
-* **Animacja konsolowa:** Przebieg symulacji jest wizualizowany w oknie terminala/konsoli z podsumowaniem statystyk populacji (liczba glonów, grzybów, bakterii oraz martwych ciał w danej turze).
-
-## 🛠️ Wykorzystane technologie i koncepcje
-
-Projekt został napisany w standardzie **C++** i silnie opiera się na zaawansowanych mechanizmach obiektowych:
-* **Polimorfizm i funkcje wirtualne:** Abstrakcyjna klasa bazowa `Mieszkaniec` oraz hierarchia dziedziczenia (`Organizm` -> `Glon`, `Grzyb`, `Bakteria`).
-* **Hermetyzacja:** Ścisłe ukrywanie danych w klasach (`Srodowisko`, `Nisza`, `Sasiedztwo`).
-* **Wzorce projektowe:** Użycie wzorca **Singleton** do przechowywania globalnych parametrów symulacji (klasa `UstawieniaSymulacji`).
-* **Zarządzanie pamięcią:** Dynamiczna alokacja pamięci dla dwuwymiarowej tablicy środowiska oraz bezpieczne zwalnianie wskaźników do obiektów.
-* **Przeciążanie operatorów:** M.in. operator postinkrementacji `++` do wywoływania kolejnego kroku symulacji oraz operator wprowadzania do strumienia `<<` do wizualizacji.
-* **STL:** Wykorzystanie standardowych kontenerów i narzędzi, takich jak `std::vector`, `std::string` czy algorytmów przetasowania.
-
-# 🏗️ Architektura klas
-
-Główne klasy wchodzące w skład aplikacji:
-* `Srodowisko` – zarządza całą siatką symulacji oraz listą mieszkańców.
-* `Nisza` – pojedyncza komórka środowiska, przechowująca wskaźnik do lokatora.
-* `Sasiedztwo` – klasa pomocnicza analizująca 8 komórek wokół konkretnego organizmu.
-* `Mieszkaniec` / `Organizm` – klasy bazowe definiujące podstawowe liczniki (życia, posiłków) i stany (żywy, głodny, pączkujący).
-* `Glon`, `Grzyb`, `Bakteria` – klasy pochodne implementujące specyficzne zachowania (np. metodę wirtualną `wybierzAkcje()`).
-* `GeneratorLosowy` – statyczna klasa pomocnicza ułatwiająca losowanie.
+- Środowisko zostało rozszerzone z 2D do 3D (wiersze, kolumny, głębokość).
+- Generator indeksów i logika sąsiedztwa obsługują układ 3D.
+- Wizualizacja została przeniesiona do renderera ncurses z obrotem bryły i panelem statystyk.
+- Symulacja działa krokowo: obrót jest ciągły, ale krok świata wykonuje się po `ENTER`.
+- Dodano tryb inspekcji (pauza obrotu, ręczne przesuwanie i obracanie widoku).
+- Dodano przełączaną obwódkę 3D sześcianu środowiska (12 linii-krawędzi).
