@@ -9,6 +9,8 @@ Dawid Rej
 ```
 # Symulacja Ekosystemu (programowanie obiektowe C++ LAB MDK )
 
+![ekosystem](https://github.com/user-attachments/assets/83519708-b42a-4dd6-a1a4-4dabc6e3964e)
+
 Prosty projekt symulacji ekosystemu na siatce 2D zrealizowany w ramach laboratoriów z Programowania Obiektowego.
 
 
