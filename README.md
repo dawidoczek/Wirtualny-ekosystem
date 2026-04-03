@@ -21,7 +21,9 @@ Prosty projekt symulacji ekosystemu na siatce 2D zrealizowany w ramach laborator
 
 ## instalowanie
 W konsoli wpisz 
-- `git clone https://github.com/dawidoczek/Wirtualny-ekosystem.git`
+```bash
+git clone https://github.com/dawidoczek/Wirtualny-ekosystem.git
+```
 
 ## Budowanie
 
