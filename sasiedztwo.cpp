@@ -22,10 +22,42 @@ RodzajMieszkanca *Sasiedztwo::
         return &sasiad[6];
     case PD:
         return &sasiad[7];
-    case GORA:
+    case P_GORA:
         return &sasiad[8];
-    case DOL:
+    case PG_GORA:
         return &sasiad[9];
+    case G_GORA:
+        return &sasiad[10];
+    case LG_GORA:
+        return &sasiad[11];
+    case L_GORA:
+        return &sasiad[12];
+    case LD_GORA:
+        return &sasiad[13];
+    case D_GORA:
+        return &sasiad[14];
+    case PD_GORA:
+        return &sasiad[15];
+    case GORA:
+        return &sasiad[16];
+    case P_DOL:
+        return &sasiad[17];
+    case PG_DOL:
+        return &sasiad[18];
+    case G_DOL:
+        return &sasiad[19];
+    case LG_DOL:
+        return &sasiad[20];
+    case L_DOL:
+        return &sasiad[21];
+    case LD_DOL:
+        return &sasiad[22];
+    case D_DOL:
+        return &sasiad[23];
+    case PD_DOL:
+        return &sasiad[24];
+    case DOL:
+        return &sasiad[25];
     case NIGDZIE:
         return nullptr;
     }
@@ -33,12 +65,12 @@ RodzajMieszkanca *Sasiedztwo::
 }
 Polozenie Sasiedztwo::losujPolozenie()
 {
-    unsigned short min = 0, max = 9;
+    unsigned short min = 0, max = 25;
     return static_cast<Polozenie>(GeneratorLosowy::losujPomiedzy(min, max));
 }
 Sasiedztwo::Sasiedztwo(RodzajMieszkanca rodzaj)
 {
-    for (int i = 0; i < 10; ++i)
+    for (int i = 0; i < 26; ++i)
         sasiad[i] = rodzaj;
 }
 void Sasiedztwo::okreslSasiada(Polozenie polozenie, RodzajMieszkanca rodzaj)
@@ -59,7 +91,7 @@ unsigned short Sasiedztwo::
 {
     unsigned short licznik = 0;
 
-    for (int i = 0; i < 10; ++i)
+    for (int i = 0; i < 26; ++i)
         if (sasiad[i] == rodzaj)
             licznik++;
 
@@ -85,21 +117,34 @@ void Sasiedztwo::
     zmienIdeksyWgPolozenia(Polozenie polozenie,
                            long &wiersz, long &kolumna, long &glebokosc)
 {
-    if (polozenie == PG || polozenie == P || polozenie == PD)
+    // Zmiana kolumny (lewo/prawo)
+    if (polozenie == PG || polozenie == P || polozenie == PD ||
+        polozenie == PG_GORA || polozenie == P_GORA || polozenie == PD_GORA ||
+        polozenie == PG_DOL || polozenie == P_DOL || polozenie == PD_DOL)
         kolumna++;
-    // błąd, brak operatora logicznego OR
-    // else if (polozenie == LG || polozenie == L | polozenie == LD)
-    else if (polozenie == LG || polozenie == L || polozenie == LD)
+    else if (polozenie == LG || polozenie == L || polozenie == LD ||
+             polozenie == LG_GORA || polozenie == L_GORA || polozenie == LD_GORA ||
+             polozenie == LG_DOL || polozenie == L_DOL || polozenie == LD_DOL)
         kolumna--;
 
-    if (polozenie == LG || polozenie == G || polozenie == PG)
+    // Zmiana wiersza (góra/dół na mapie)
+    if (polozenie == LG || polozenie == G || polozenie == PG ||
+        polozenie == LG_GORA || polozenie == G_GORA || polozenie == PG_GORA ||
+        polozenie == LG_DOL || polozenie == G_DOL || polozenie == PG_DOL)
         wiersz--;
-    else if (polozenie == LD || polozenie == D || polozenie == PD)
+    else if (polozenie == LD || polozenie == D || polozenie == PD ||
+             polozenie == LD_GORA || polozenie == D_GORA || polozenie == PD_GORA ||
+             polozenie == LD_DOL || polozenie == D_DOL || polozenie == PD_DOL)
         wiersz++;
 
-    if (polozenie == GORA)
+    // Zmiana głębokości (połowy do góry/dołu)
+    if (polozenie == P_GORA || polozenie == PG_GORA || polozenie == G_GORA ||
+        polozenie == LG_GORA || polozenie == L_GORA || polozenie == LD_GORA ||
+        polozenie == D_GORA || polozenie == PD_GORA || polozenie == GORA)
         glebokosc++;
-    else if (polozenie == DOL)
+    else if (polozenie == P_DOL || polozenie == PG_DOL || polozenie == G_DOL ||
+             polozenie == LG_DOL || polozenie == L_DOL || polozenie == LD_DOL ||
+             polozenie == D_DOL || polozenie == PD_DOL || polozenie == DOL)
         glebokosc--;
 }
 void Sasiedztwo::

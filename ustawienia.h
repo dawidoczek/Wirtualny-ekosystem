@@ -37,6 +37,7 @@ enum AkcjaMieszkanca
 
 enum Polozenie
 {
+    // Warstwa 0 (bieżący poziom)
     P = 0,
     PG = 1,
     G = 2,
@@ -45,9 +46,27 @@ enum Polozenie
     LD = 5,
     D = 6,
     PD = 7,
-    GORA = 8,
-    DOL = 9,
-    NIGDZIE = 10
+    // Warstwa +1 (górna)
+    P_GORA = 8,
+    PG_GORA = 9,
+    G_GORA = 10,
+    LG_GORA = 11,
+    L_GORA = 12,
+    LD_GORA = 13,
+    D_GORA = 14,
+    PD_GORA = 15,
+    GORA = 16,
+    // Warstwa -1 (dolna)
+    P_DOL = 17,
+    PG_DOL = 18,
+    G_DOL = 19,
+    LG_DOL = 20,
+    L_DOL = 21,
+    LD_DOL = 22,
+    D_DOL = 23,
+    PD_DOL = 24,
+    DOL = 25,
+    NIGDZIE = 26
 };
 
 class UstawieniaSymulacji

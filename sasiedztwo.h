@@ -5,7 +5,7 @@ class Sasiedztwo
 {
 
 private:
-    RodzajMieszkanca sasiad[10];
+    RodzajMieszkanca sasiad[26];
 
     RodzajMieszkanca *elementWewnetrzny(
         Polozenie polozenie);
