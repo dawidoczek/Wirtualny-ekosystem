@@ -10,17 +10,17 @@ string kolory[] = {"\e[0;32m", "\e[0;35m", "\e[0;36m", "\e[0;37m", "\e[0;33m", "
 string koloruj(string tekst){
 
     for(unsigned long i=0; i<tekst.length(); i++){
-        if(tekst[i] == '*')
+        if(tekst[i] == UST.znakGlon)
             tekst.insert(i, kolory[0]);
-        else if(tekst[i] == '#')
+        else if(tekst[i] == UST.znakGrzyb)
             tekst.insert(i, kolory[1]);
-        else if(tekst[i] == '@')
+        else if(tekst[i] == UST.znakBakteria)
             tekst.insert(i, kolory[2]);
-        else if(tekst[i] == '+')
+        else if(tekst[i] == UST.znakTrup)
             tekst.insert(i, kolory[5]);
-        else if(tekst[i] == '_')
+        else if(tekst[i] == UST.znakPustaNisza)
             tekst.insert(i, kolory[3]);
-        else if(tekst[i] == '?')
+        else if(tekst[i] == UST.znakNieokreslony)
             tekst.insert(i, kolory[6]);
         else
             tekst.insert(i, kolory[6]);
@@ -104,6 +104,8 @@ void wyswietl(UstawieniaSymulacji &UST)
 
 int main()
 {
+    UstawieniaSymulacji::pobierzUstawienia().wczytajZPliku("ustawienia.txt");
+
     Srodowisko ekoSystem = Srodowisko::czytajZPliku("start.txt");
 
     ofstream plikWynikowy("symulacja.txt");

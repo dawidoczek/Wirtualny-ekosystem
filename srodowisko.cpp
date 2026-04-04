@@ -215,6 +215,12 @@ std::string Srodowisko::doTekstu() const
     char sep = UstawieniaSymulacji::
                    pobierzUstawienia()
                        .znakSeparator;
+    char glon = UstawieniaSymulacji ::pobierzUstawienia().znakGlon;
+    char grzyb = UstawieniaSymulacji ::pobierzUstawienia().znakGrzyb;
+    char bakteria = UstawieniaSymulacji ::pobierzUstawienia().znakBakteria;
+    char pusta = UstawieniaSymulacji ::pobierzUstawienia().znakPustaNisza;
+
+
 
     for (unsigned int w = 0; w < wiersze; w++)
     {
@@ -227,8 +233,12 @@ std::string Srodowisko::doTekstu() const
 
         tekst += '\n';
     }
+    
 
-    tekst += "\n Glony * : " + std::to_string(liczba(GLON)) + "\n Grzyby # : " + std::to_string(liczba(GRZYB)) + "\nBakterie @ : " + std::to_string(liczba(BAKTERIA)) + "\n Martwe + : " + std::to_string(liczba(TRUP)) + '\n';
+    tekst += "\n Glony " + std::string(1, glon) + " : " + std::to_string(liczba(GLON)) +
+             "\n Grzyby " + std::string(1, grzyb) + " : " + std::to_string(liczba(GRZYB)) +
+             "\nBakterie " + std::string(1, bakteria) + " : " + std::to_string(liczba(BAKTERIA)) +
+             "\n Martwe " + std::string(1, pusta) + " : " + std::to_string(liczba(TRUP)) + '\n';
 
     return tekst;
     // kolejny błąd, zabrakło nawiasu zamykającego

@@ -2,7 +2,7 @@
     \   /\
     )  ( ')
     (  /  )
-    \(__)|
+     \(__)|
     
 By
 Dawid Rej
@@ -19,7 +19,15 @@ Prosty projekt symulacji ekosystemu na siatce 2D zrealizowany w ramach laborator
 - kompilator C++ (`g++` lub `clang++`)
 - `make`
 
+## instalowanie
+W konsoli wpisz 
+```bash
+git clone https://github.com/dawidoczek/Wirtualny-ekosystem.git
+```
+
+
 ## Budowanie
+
 
 W katalogu projektu uruchom:
 
@@ -59,6 +67,7 @@ Rozwój ekosystemu przebiega w dyskretnych krokach czasowych (turach). W każdej
 * **Złożone interakcje:** Organizmy reagują na otoczenie w zależności od swojego gatunku (np. bakterie szukają ofiar, grzyby szukają martwej materii organicznej, głodne organizmy się nie rozmnażają).
 * **Losowość:** Wykorzystanie generatora liczb pseudolosowych (biblioteka `<random>`) do decydowania o ruchu, maksymalnym wieku organizmu czy kierunku rozmnażania.
 * **Animacja konsolowa:** Przebieg symulacji jest wizualizowany w oknie terminala/konsoli z podsumowaniem statystyk populacji (liczba glonów, grzybów, bakterii oraz martwych ciał w danej turze).
+* **Wczytywanie ustawień z pliku:** Program wczytuje ustawienia z pliku ustawienia.txt
 
 ## 🛠️ Wykorzystane technologie i koncepcje
 

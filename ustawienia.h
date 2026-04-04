@@ -1,7 +1,9 @@
 #pragma once
+#include <fstream>
 #include <iostream>
 #include <string>
 #include <vector>
+#include <cctype>
 using namespace std;
 
 /*
@@ -51,7 +53,7 @@ enum Polozenie
 class UstawieniaSymulacji
 {
 public:
-    const char
+    char
         znakGlon = '*',
         znakGrzyb = '#',
         znakBakteria = '@',
@@ -88,6 +90,75 @@ public:
     bool poprawnySeparator(char znak) const
     {
         return znak == znakSeparator;
+    }
+
+    bool wczytajZPliku(const string &nazwaPliku = "ustawienia.txt")
+    {
+        ifstream plik(nazwaPliku);
+        if (!plik.is_open())
+            return false;
+
+        auto trim = [](string &s)
+        {
+            while (!s.empty() && isspace(static_cast<unsigned char>(s.front())))
+                s.erase(s.begin());
+            while (!s.empty() && isspace(static_cast<unsigned char>(s.back())))
+                s.pop_back();
+        };
+
+        string klucz, wartosc;
+        while (getline(plik, klucz, ';'))
+        {
+            if (!getline(plik, wartosc, ','))
+                break;
+
+            trim(klucz);
+            trim(wartosc);
+            if (klucz.empty() || wartosc.empty())
+                continue;
+
+            if (klucz == "znakGlon")
+                znakGlon = wartosc[0];
+            else if (klucz == "znakGrzyb")
+                znakGrzyb = wartosc[0];
+            else if (klucz == "znakBakteria")
+                znakBakteria = wartosc[0];
+            else if (klucz == "znakTrup")
+                znakTrup = wartosc[0];
+            else if (klucz == "znakNieokreslony")
+                znakNieokreslony = wartosc[0];
+            else if (klucz == "znakPustaNisza")
+                znakPustaNisza = wartosc[0];
+            else if (klucz == "znakSeparator")
+                znakSeparator = wartosc[0];
+            else if (klucz == "glonZycieMin")
+                glonZycieMin = static_cast<unsigned short>(stoi(wartosc));
+            else if (klucz == "glonZycieMax")
+                glonZycieMax = static_cast<unsigned short>(stoi(wartosc));
+            else if (klucz == "glonKosztPotomka")
+                glonKosztPotomka = static_cast<unsigned short>(stoi(wartosc));
+            else if (klucz == "glonLimitPosilkow")
+                glonLimitPosilkow = static_cast<unsigned short>(stoi(wartosc));
+            else if (klucz == "grzybZycieMin")
+                grzybZycieMin = static_cast<unsigned short>(stoi(wartosc));
+            else if (klucz == "grzybZycieMax")
+                grzybZycieMax = static_cast<unsigned short>(stoi(wartosc));
+            else if (klucz == "grzybKosztPotomka")
+                grzybKosztPotomka = static_cast<unsigned short>(stoi(wartosc));
+            else if (klucz == "grzybLimitPosilkow")
+                grzybLimitPosilkow = static_cast<unsigned short>(stoi(wartosc));
+            else if (klucz == "bakteriaZycieMin")
+                bakteriaZycieMin = static_cast<unsigned short>(stoi(wartosc));
+            else if (klucz == "bakteriaZycieMax")
+                bakteriaZycieMax = static_cast<unsigned short>(stoi(wartosc));
+            else if (klucz == "bakteriaKosztPotomka")
+                bakteriaKosztPotomka = static_cast<unsigned short>(stoi(wartosc));
+            else if (klucz == "bakteriaLimitPosilkow")
+                bakteriaLimitPosilkow = static_cast<unsigned short>(stoi(wartosc));
+        }
+
+        plik.close();
+        return true;
     }
 
 private:

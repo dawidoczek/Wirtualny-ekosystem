@@ -1,0 +1,22 @@
+znakGlon;*,
+znakGrzyb;#,
+znakBakteria;@,
+znakTrup;+,
+znakNieokreslony;?,
+znakPustaNisza;_,
+znakSeparator; ,
+
+glonZycieMin;5,
+glonZycieMax;10,
+glonKosztPotomka;2,
+glonLimitPosilkow;6,
+
+grzybZycieMin;40,
+grzybZycieMax;60,
+grzybKosztPotomka;3,
+grzybLimitPosilkow;30,
+
+bakteriaZycieMin;25,
+bakteriaZycieMax;40,
+bakteriaKosztPotomka;3,
+bakteriaLimitPosilkow;10,
