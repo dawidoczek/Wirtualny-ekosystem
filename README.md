@@ -8,6 +8,7 @@ By
 Dawid Rej
 ```
 # Symulacja Ekosystemu 3D (programowanie obiektowe C++)
+
 ![ekosystem2 3d](https://github.com/user-attachments/assets/6ad21c4b-baa7-4142-8d3e-10324fe795e0)
 
 
