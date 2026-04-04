@@ -199,6 +199,8 @@ void Srodowisko::wykonajKrokSymulacji()
     // błąd, organizm moze wykonac kilka ruchow w jednej turze
     // uznajmy ze bakteria na [0,0] wykona ruch na [1,1]
     // i potem przeiterujemy przez [1,1], to wykona ona kolejną akcje
+    // ta sama sytuacja jest przy tworzeniu potomka moze sie zdarzyc
+    // ale to chyba intended jest?
     for (Indeks2D indeks : indeksyLosowe)
     {
         if (nisza[indeks.wiersz][indeks.kolumna].juzObsluzonaWTurze())
