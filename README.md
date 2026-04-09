@@ -40,7 +40,7 @@ c++ -Wall -Wextra -g3 *.cpp -o output/main && ./output/main
 ## Struktura projektu
 
 ```text
-/Wirtualny-ekosystem
+Wirtualny-ekosystem/
 ├── main.cpp              # start programu i petla tur
 ├── srodowisko.h          # logika swiata i przebieg symulacji
 ├── nisza.h               # pojedyncze pole planszy
