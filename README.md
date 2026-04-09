@@ -16,7 +16,7 @@ Prosty projekt symulacji ekosystemu na siatce 2D zrealizowany w ramach laborator
 
 ## Wymagania
 
-- kompilator C++ (`g++` lub `clang++`)
+- kompilator C++
 - `make`
 
 ## instalowanie
@@ -25,14 +25,23 @@ W konsoli wpisz
 git clone https://github.com/dawidoczek/Wirtualny-ekosystem.git
 ```
 
-## Budowanie
+## Struktura projektu
 
-W katalogu projektu uruchom:
-
-```bash
-make
+```text
+/Wirtualny-ekosystem
+├── main.cpp              # start programu i petla tur
+├── srodowisko.h          # logika swiata i przebieg symulacji
+├── nisza.h               # pojedyncze pole planszy
+├── sasiedztwo.h          # analiza sasiedztwa i kierunki ruchu
+├── mieszkaniec.h         # baza dla wszystkich bytow
+├── organizm.h            # wspolna logika zycia organizmow
+├── osobniki.h            # Glon, Grzyb, Bakteria
+├── generatorLosowy.h     # losowania
+├── ustawienia.h          # typy, enumy i konfiguracja
+├── ustawienia.txt        # dane konfiguracyjne
+├── start.txt             # dane wejsciowe
+└── symulacja.txt         # dane wyjsciowe: zapis kolejnych tur
 ```
-
 
 ## Uruchamianie
 
@@ -40,15 +49,13 @@ make
 make run
 ```
 
-lub bezpośrednio:
+lub ręcznie
 
 ```bash
-./output/main
+c++ -Wall -Wextra -g3 *.cpp -o output/main && ./output/main
 ```
 
-Program czyta stan początkowy z pliku `start.txt` i zapisuje przebieg do `symulacja.txt`.
-
-## 📖 Opis projektu
+## Opis projektu
 
 Aplikacja symuluje zamknięte środowisko (reprezentowane jako prostokątna siatka nisz/komórek), w którym żyją i oddziałują na siebie trzy gatunki wirtualnych organizmów:
 * **Glony (`*`)** – samożywne organizmy prowadzące fotosyntezę.
@@ -59,14 +66,14 @@ Aplikacja symuluje zamknięte środowisko (reprezentowane jako prostokątna siat
 
 Rozwój ekosystemu przebiega w dyskretnych krokach czasowych (turach). W każdej turze organizmy wykonują swoje funkcje życiowe na podstawie analizy swojego bezpośredniego sąsiedztwa (8 sąsiednich komórek).
 
-## ✨ Funkcjonalności
+## Funkcjonalności
 
 * **Cykl życia organizmów:** Każdy organizm rodzi się, starzeje, odżywia, rozmnaża, porusza i ostatecznie umiera.
 * **Złożone interakcje:** Organizmy reagują na otoczenie w zależności od swojego gatunku (np. bakterie szukają ofiar, grzyby szukają martwej materii organicznej, głodne organizmy się nie rozmnażają).
 * **Losowość:** Wykorzystanie generatora liczb pseudolosowych (biblioteka `<random>`) do decydowania o ruchu, maksymalnym wieku organizmu czy kierunku rozmnażania.
 * **Animacja konsolowa:** Przebieg symulacji jest wizualizowany w oknie terminala/konsoli z podsumowaniem statystyk populacji (liczba glonów, grzybów, bakterii oraz martwych ciał w danej turze).
 
-## 🛠️ Wykorzystane technologie i koncepcje
+## Wykorzystane technologie i koncepcje
 
 Projekt został napisany w standardzie **C++** i silnie opiera się na zaawansowanych mechanizmach obiektowych:
 * **Polimorfizm i funkcje wirtualne:** Abstrakcyjna klasa bazowa `Mieszkaniec` oraz hierarchia dziedziczenia (`Organizm` -> `Glon`, `Grzyb`, `Bakteria`).
@@ -76,7 +83,7 @@ Projekt został napisany w standardzie **C++** i silnie opiera się na zaawansow
 * **Przeciążanie operatorów:** M.in. operator postinkrementacji `++` do wywoływania kolejnego kroku symulacji oraz operator wprowadzania do strumienia `<<` do wizualizacji.
 * **STL:** Wykorzystanie standardowych kontenerów i narzędzi, takich jak `std::vector`, `std::string` czy algorytmów przetasowania.
 
-# 🏗️ Architektura klas
+# Architektura klas
 
 Główne klasy wchodzące w skład aplikacji:
 * `Srodowisko` – zarządza całą siatką symulacji oraz listą mieszkańców.
