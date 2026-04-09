@@ -25,6 +25,18 @@ W konsoli wpisz
 git clone https://github.com/dawidoczek/Wirtualny-ekosystem.git
 ```
 
+## Uruchamianie
+
+```bash
+make run
+```
+
+lub ręcznie
+
+```bash
+c++ -Wall -Wextra -g3 *.cpp -o output/main && ./output/main
+```
+
 ## Struktura projektu
 
 ```text
@@ -41,18 +53,6 @@ git clone https://github.com/dawidoczek/Wirtualny-ekosystem.git
 ├── ustawienia.txt        # dane konfiguracyjne
 ├── start.txt             # dane wejsciowe
 └── symulacja.txt         # dane wyjsciowe: zapis kolejnych tur
-```
-
-## Uruchamianie
-
-```bash
-make run
-```
-
-lub ręcznie
-
-```bash
-c++ -Wall -Wextra -g3 *.cpp -o output/main && ./output/main
 ```
 
 ## Opis projektu
