@@ -1,4 +1,9 @@
-#include <ncurses.h>
+#ifdef _WIN32
+    #include "curses.h"
+#elif defined(__linux__) || defined(__APPLE__)
+    #include <ncurses.h>
+#endif
+
 #include <cmath>
 #include <vector>
 #include <algorithm>
