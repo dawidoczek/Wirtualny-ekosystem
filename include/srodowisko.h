@@ -12,17 +12,20 @@ class Srodowisko
 {
 
 public:
-
+    // tu dodałem czesc implementacji 3d
     const unsigned int wiersze, kolumny, glebokosc;
     const unsigned long liczbaNisz;
     unsigned long numerTury = 0;
     static unsigned long aktualnaTura;
 
 private:
+    // wskaznik na wskaznik na wskaznik lol
     Nisza ***nisza;
         
 
 public:
+    // tu dodałem czesc implementacji 3d, wszedzie gdzie glebokosc
+
     Srodowisko(unsigned int _wiersze,
                unsigned int _kolumny,
                unsigned int _glebokosc = 1);

@@ -34,7 +34,7 @@ enum AkcjaMieszkanca
     ROZKLAD,
     NIC
 };
-
+// tu dodałem czesc implementacji 3d
 enum Polozenie
 {
     // Warstwa 0 (bieżący poziom)

@@ -11,7 +11,7 @@ public:
     Indeks2D(unsigned int _w = 0, unsigned int _k = 0)
         : wiersz(_w), kolumna(_k) {}
 };
-
+// tu dodałem czesc implementacji 3d
 class Indeks3D
 {
 public:

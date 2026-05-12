@@ -83,7 +83,7 @@ char Nisza::jakiSymbol() const
     else
         return lokator->jakiSymbol();
 }
-
+// tu moje, czy już się ruszył anty bug milion ruchow w jednej turze
 bool Nisza::juzObsluzonaWTurze() const
 {
     return ostatniaTuraObslugi == Srodowisko::pobierzAktualnaTure();

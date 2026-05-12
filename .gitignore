@@ -6,3 +6,4 @@ Wirtualny-ekosystem.layout
 /.vscode
 bin
 obj
+.DS_Store

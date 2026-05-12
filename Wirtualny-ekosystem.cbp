@@ -62,8 +62,6 @@
 		<Unit filename="src/rysuj3d.cpp" />
 		<Unit filename="src/sasiedztwo.cpp" />
 		<Unit filename="src/srodowisko.cpp" />
-		<Unit filename="start.txt" />
-		<Unit filename="symulacja.txt" />
 		<Extensions>
 			<lib_finder disable_auto="1" />
 		</Extensions>

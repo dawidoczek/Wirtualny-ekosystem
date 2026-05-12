@@ -1,9 +1,10 @@
 #include "srodowisko.h"
 #include "osobniki.h"
 #include "generatorLosowy.h"
-
+// deklaracja istatnia rysuj3d, bo jest w innym pliku
 int rysuj3d(Srodowisko &ekoSystem);
 
+// tu tez zmienilem
 static void losowoRozmiesc(Srodowisko &ekoSystem,
                            unsigned int ile,
                            RodzajMieszkanca rodzaj)
@@ -35,7 +36,7 @@ static void losowoRozmiesc(Srodowisko &ekoSystem,
 
 int main()
 {
-    Srodowisko ekoSystem(5, 5, 5);
+    Srodowisko ekoSystem(10, 5, 5);
 
     losowoRozmiesc(ekoSystem, 20, GLON);
     losowoRozmiesc(ekoSystem, 20, GRZYB);

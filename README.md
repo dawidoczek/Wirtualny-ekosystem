@@ -36,4 +36,4 @@ Projekt symulacji ekosystemu rozwinięty do wersji 3D z interaktywną wizualizac
 - Wizualizacja została przeniesiona do renderera z biblioteki ncurses z auto obrotem bryły i panelem statystyk.
 - Symulacja działa krokowo: obrót jest ciągły (co 50ms), ale krok świata wykonuje się po kliknieciu `ENTER`.
 - Dodano tryb inspekcji (pauza obrotu, ręczne przesuwanie i obracanie widoku).
-- Dodano przełączaną obwódkę 3D sześcianu środowiska (12 linii-krawędzi).
+- Dodano przełączaną obwódkę sześcianu 

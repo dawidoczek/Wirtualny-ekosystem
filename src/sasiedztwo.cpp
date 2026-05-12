@@ -1,6 +1,7 @@
 #include "sasiedztwo.h"
 #include "generatorLosowy.h"
-
+// tu zmieniłem
+// na co mi to było boze
 RodzajMieszkanca *Sasiedztwo::
     elementWewnetrzny(Polozenie polozenie)
 {
@@ -65,7 +66,7 @@ RodzajMieszkanca *Sasiedztwo::
 }
 Polozenie Sasiedztwo::losujPolozenie()
 {
-    unsigned short min = 0, max = 25;
+    unsigned short min = 0, max = 26;
     return static_cast<Polozenie>(GeneratorLosowy::losujPomiedzy(min, max));
 }
 Sasiedztwo::Sasiedztwo(RodzajMieszkanca rodzaj)

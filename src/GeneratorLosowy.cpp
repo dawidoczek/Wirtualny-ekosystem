@@ -2,6 +2,7 @@
 #include <algorithm>
 #include <iostream>
 // https://www.cplusplus.com/reference/random/mt19937/
+// tu zmieniłem
 std::mt19937& GeneratorLosowy::generatorLosowyEngine()
 {
     static std::mt19937 engine{std::random_device{}()};

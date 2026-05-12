@@ -38,6 +38,8 @@ public:
 
 private:
     // friend class Srodowisko;
+    // tu dodałem czesc implementacji 3d
+    
     friend void Srodowisko::wykonajAkcje(unsigned int wiersz,unsigned int kolumna,unsigned int glebokosc);
     ZamiarMieszkanca aktywujLokatora(
         Sasiedztwo sasiedztwo)

@@ -1,5 +1,11 @@
 #ifdef _WIN32
-    #include "curses.h"
+    // jak się okazuje, bibloteka na której bazuje cały projekt,
+    // jest wbudowana tylko w Maca...
+    // na linuxie mozna latwo odpalic pobrać
+    // ale na windowsie to katorga.
+    // więc załączam biblioteke PDCurses.a, wraz z plikiem nagłówkowym
+    // prosze sobie poradzić.
+    #include "PDcurses.h"
 #elif defined(__linux__) || defined(__APPLE__)
     #include <ncurses.h>
 #endif
@@ -74,7 +80,7 @@ void project(double x, double y, double z, double display_size,
              int center_x, int center_y, double max_scale,
              int &out_x, int &out_y)
 {
-    double camera_distance = max_scale + 3.5; // offset 3.5 na sztywno
+    double camera_distance = max_scale + 5.5; // offset 5.5 na sztywno
     double factor = display_size / (z + camera_distance);
 
     out_x = static_cast<int>(x * factor * 2 + center_x);
@@ -138,7 +144,7 @@ void drawLine2D(int x0, int y0, int x1, int y1, int max_y, int max_x, int statsW
 
     while (true)
     {
-        if (x0 > statsWidth && x0 < max_x && y0 >= 0 && y0 < max_y)
+        if (x0 < max_x && y0 >= 0)
             mvaddch(y0, x0, '#');
 
         if (x0 == x1 && y0 == y1)
@@ -235,14 +241,12 @@ int rysuj3d(Srodowisko &ekoSystem)
     int grid_x = static_cast<int>(ekoSystem.wiersze);
     int grid_y = static_cast<int>(ekoSystem.kolumny);
     int grid_z = static_cast<int>(ekoSystem.glebokosc);
-    // TODO ustaw tak zeby bylo dynamicznie
+    // skale i display_size będą liczone dynamicznie po poznaniu rozmiaru terminala
     double scale_x = 1.0;
     double scale_y = 1.0;
     double scale_z = 1.0;
-    // TODO zmień na dynamiczne tu tez
     double display_size = 50.0;
-
-    double max_scale = std::max({scale_x, scale_y, scale_z});
+    double max_scale = 1.0;
 
     ViewState widok;
 
@@ -289,6 +293,34 @@ int rysuj3d(Srodowisko &ekoSystem)
         int center_y = max_y / 2;
 
         drawStatsPanel(ekoSystem, max_y);
+
+        // Oblicz dynamiczne skale na podstawie proporcji siatki
+        int max_grid = std::max({grid_x, grid_y, grid_z});
+        if (max_grid > 0)
+        {
+            scale_x = static_cast<double>(grid_x) / static_cast<double>(max_grid);
+            scale_y = static_cast<double>(grid_y) / static_cast<double>(max_grid);
+            scale_z = static_cast<double>(grid_z) / static_cast<double>(max_grid);
+        }
+        else
+        {
+            scale_x = scale_y = scale_z = 1.0;
+        }
+
+        max_scale = std::max({scale_x, scale_y, scale_z});
+
+        // Obszar rysowania po odjęciu panelu statystyk i marginesu
+        int avail_w = std::max(10, max_x - statsWidth - 4);
+        int avail_h = std::max(6, max_y - 4);
+
+        // Conservatywne wyliczenie display_size bazujące na najgorszym przypadku (z = -1)
+        double camera_distance = max_scale + 3.5; // zgodnie z funkcją project
+        double denom = camera_distance - 1.0;     // z = -1 -> z + camera_distance = camera_distance - 1
+        double ds_x = (denom > 0.0) ? (static_cast<double>(avail_w) * denom / 4.0) : 10.0;
+        double ds_y = (denom > 0.0) ? (static_cast<double>(avail_h) * denom / 2.0) : 10.0;
+
+        // wybierz mniejszy z dopuszczalnych rozmiarów i dodaj mały margines (0.9)
+        display_size = std::max(8.0, std::min(ds_x, ds_y));
 
         std::vector<Point3D> rotated_points;
         for (int i = 0; i < grid_x; ++i)

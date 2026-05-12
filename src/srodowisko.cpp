@@ -80,6 +80,7 @@ Srodowisko::~Srodowisko()
     }
     delete[] nisza;
 }
+// tu zmieniłem
 
 void Srodowisko::lokuj(Mieszkaniec *mieszkaniec,
                        unsigned int wiersz, unsigned int kolumna,
@@ -88,7 +89,7 @@ void Srodowisko::lokuj(Mieszkaniec *mieszkaniec,
     if (wiersz < wiersze && kolumna < kolumny && g < glebokosc)
         nisza[wiersz][kolumna][g].przyjmijLokatora(mieszkaniec);
 }
-
+// tu zmieniłem
 Sasiedztwo Srodowisko::ustalSasiedztwo(
     unsigned int wiersz, unsigned int kolumna, unsigned int g) const
 {
@@ -119,6 +120,7 @@ Sasiedztwo Srodowisko::ustalSasiedztwo(
 
     return sasiedztwo;
 }
+// tu zmieniłem
 unsigned long Srodowisko::
     liczba(RodzajMieszkanca rodzaj) const
 {
@@ -201,6 +203,8 @@ void Srodowisko::wykonajAkcje(unsigned int wiersz,
         break;
     }
 }
+// tu zmieniłem
+
 void Srodowisko::wykonajKrokSymulacji()
 {
     numerTury++;
@@ -219,7 +223,7 @@ void Srodowisko::wykonajKrokSymulacji()
         wykonajAkcje(indeks.wiersz, indeks.kolumna, indeks.glebokosc);
     }
 }
-
+// tu zmieniłem, ale zostawiam jako debug
 std::string Srodowisko::doTekstu() const
 {
     std::string tekst = "";
@@ -251,7 +255,7 @@ std::string Srodowisko::doTekstu() const
     return tekst;
     // kolejny błąd, zabrakło nawiasu zamykającego
 }
-
+// tu zmieniłem
 Srodowisko::Srodowisko(unsigned int _wiersze,
                        unsigned int _kolumny,
                        unsigned int _glebokosc)
@@ -269,7 +273,7 @@ Srodowisko::Srodowisko(unsigned int _wiersze,
             nisza[i][j] = new Nisza[glebokosc];
     }
 }
-
+// tu zmieniłem
 char Srodowisko::symbolNiszy(unsigned int wiersz,
                              unsigned int kolumna,
                              unsigned int g) const
@@ -278,7 +282,7 @@ char Srodowisko::symbolNiszy(unsigned int wiersz,
         return UstawieniaSymulacji::pobierzUstawienia().znakNieokreslony;
     return nisza[wiersz][kolumna][g].jakiSymbol();
 }
-
+// tu zmieniłem
 RodzajMieszkanca Srodowisko::rodzajNiszy(unsigned int wiersz,
                                          unsigned int kolumna,
                                          unsigned int g) const
