@@ -1,20 +1,21 @@
 CXX ?= g++
 CXXFLAGS ?= -Wall -Wextra -g3
+CPPFLAGS ?= -Iinclude
 LDLIBS ?= -lncurses
 TARGET := output/main
-SOURCES := $(wildcard *.cpp)
+SOURCES := $(wildcard src/*.cpp)
 OBJDIR := build
-OBJECTS := $(patsubst %.cpp,$(OBJDIR)/%.o,$(SOURCES))
+OBJECTS := $(patsubst src/%.cpp,$(OBJDIR)/%.o,$(SOURCES))
 
 .PHONY: all clean run
 
 all: $(TARGET)
 
 $(TARGET): $(OBJECTS) | output
-	$(CXX) $(CXXFLAGS) $(OBJECTS) -o $(TARGET) $(LDLIBS)
+	$(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OBJECTS) -o $(TARGET) $(LDLIBS)
 
-$(OBJDIR)/%.o: %.cpp | $(OBJDIR)
-	$(CXX) $(CXXFLAGS) -c $< -o $@
+$(OBJDIR)/%.o: src/%.cpp | $(OBJDIR)
+	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $< -o $@
 
 output:
 	mkdir -p output

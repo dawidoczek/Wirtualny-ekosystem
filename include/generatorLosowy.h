@@ -26,6 +26,7 @@ class GeneratorLosowy
 {
 private:
     static std::random_device device;
+    static std::mt19937& generatorLosowyEngine();
     GeneratorLosowy() {}
 
 public:

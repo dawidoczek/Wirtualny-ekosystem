@@ -1,6 +1,12 @@
 #include "generatorLosowy.h"
 #include <algorithm>
 #include <iostream>
+// https://www.cplusplus.com/reference/random/mt19937/
+std::mt19937& GeneratorLosowy::generatorLosowyEngine()
+{
+    static std::mt19937 engine{std::random_device{}()};
+    return engine;
+}
 
 std::random_device GeneratorLosowy::device;
 
@@ -32,12 +38,9 @@ long GeneratorLosowy::losujPomiedzy(long min, long max)
 }
 int GeneratorLosowy::losujOdZeraDo(int max)
 {
+    if (max <= 0)
+        return 0;
 
-
-    // błąd, losujOdZeraDo(5) powinno zwracać 0, 1, 2, 3 lub 4, a nie 5
-    // std::random_shuffle zakłada że funkcja zwraca wartosc 
-    // z zakresu [0, max), a nie [0, max], więc powinno być max-1
-    // std::uniform_int_distribution<int> dist(0, max);
     std::uniform_int_distribution<int> dist(0, max-1);
     return dist(GeneratorLosowy::device);
 }
@@ -48,12 +51,7 @@ WektorIndeksow2D GeneratorLosowy::indeksyLosowe(unsigned int wiersze, unsigned i
     for (unsigned int w = 0; w < wiersze; w++)
         for (unsigned int k = 0; k < kolumny; k++)
             indeksy.push_back(Indeks2D(w, k));
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-// depraction
-    std::random_shuffle(indeksy.begin(), indeksy.end(),
-                        GeneratorLosowy::losujOdZeraDo);
-#pragma clang diagnostic pop
+    std::shuffle(indeksy.begin(), indeksy.end(), generatorLosowyEngine());
 
     return indeksy;
 }
@@ -66,11 +64,7 @@ WektorIndeksow3D GeneratorLosowy::indeksyLosowe(unsigned int wiersze, unsigned i
             for (unsigned int g = 0; g < glebokosc; g++)
                 indeksy.push_back(Indeks3D(w, k, g));
 
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-    std::random_shuffle(indeksy.begin(), indeksy.end(),
-                        GeneratorLosowy::losujOdZeraDo);
-#pragma clang diagnostic pop
+    std::shuffle(indeksy.begin(), indeksy.end(), generatorLosowyEngine());
 
     return indeksy;
 }

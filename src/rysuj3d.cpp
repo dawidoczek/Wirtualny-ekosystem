@@ -63,9 +63,13 @@ Point3D rotate_z(double x, double y, double z, double angle, int color, char sym
 
 // Funkcja rzutowania na ekran 2D
 // blizsze elementy kamery sa wieksze, dalsze mniejsze
-void project(double x, double y, double z, double display_size, int center_x, int center_y, double max_scale, int &out_x, int &out_y)
+// xyz, rozmiar wyswietlania, srodek ekranu,
+// maksymalna skala, wyjscie x i y
+void project(double x, double y, double z, double display_size,
+             int center_x, int center_y, double max_scale,
+             int &out_x, int &out_y)
 {
-    double camera_distance = max_scale + 3.5;
+    double camera_distance = max_scale + 3.5; // offset 3.5 na sztywno
     double factor = display_size / (z + camera_distance);
 
     out_x = static_cast<int>(x * factor * 2 + center_x);
@@ -74,23 +78,34 @@ void project(double x, double y, double z, double display_size, int center_x, in
 
 void drawStatsPanel(const Srodowisko &ekoSystem, int max_y)
 {
+    if (max_y <= 0)
+        return;
+
     int y = 1;
+    // int mvprintw(int, int, const char *, ...)
+    //              y    x    format        args
+    auto printLine = [&](const char *format, auto... args)
+    {
+        if (y < max_y)
+            mvprintw(y++, 2, format, args...);
+    };
+
     // attr on, ustawia kolor i pogrubienie, a attroff wyłącza
     attron(A_BOLD | COLOR_PAIR(7));
-    mvprintw(y++, 2, "STATYSTYKI");
-    mvprintw(y++, 2, "TURA: %lu", ekoSystem.numerTury);
-    mvprintw(y++, 2, "GLON  : %lu", ekoSystem.liczba(GLON));
-    mvprintw(y++, 2, "GRZYB : %lu", ekoSystem.liczba(GRZYB));
-    mvprintw(y++, 2, "BAKT  : %lu", ekoSystem.liczba(BAKTERIA));
-    mvprintw(y++, 2, "TRUP  : %lu", ekoSystem.liczba(TRUP));
+    printLine("STATYSTYKI");
+    printLine("TURA: %lu", ekoSystem.numerTury);
+    printLine("GLON  : %lu", ekoSystem.liczba(GLON));
+    printLine("GRZYB : %lu", ekoSystem.liczba(GRZYB));
+    printLine("BAKT  : %lu", ekoSystem.liczba(BAKTERIA));
+    printLine("TRUP  : %lu", ekoSystem.liczba(TRUP));
     attroff(A_BOLD | COLOR_PAIR(7));
-
-    mvprintw(y + 1, 2, "SPACJA - inspekcja");
-    mvprintw(y + 2, 2, "ENTER - krok symulacji");
-    mvprintw(y + 3, 2, "strzalki - przesun");
-    mvprintw(y + 4, 2, "shift+strzalki - obrot");
-    mvprintw(y + 5, 2, "n - obwodka ekosystemu");
-    mvprintw(y + 6, 2, "q - wyjscie");
+    y++;
+    printLine("SPACJA - inspekcja");
+    printLine("ENTER - krok symulacji");
+    printLine("strzalki - przesun");
+    printLine("shift+strzalki - obrot");
+    printLine("n - obwodka ekosystemu");
+    printLine("q - wyjscie");
 }
 // przeksztalc punkt
 Point3D transformPoint(double x, double y, double z, const ViewState &widok)
@@ -109,6 +124,7 @@ Point3D transformPoint(double x, double y, double z, const ViewState &widok)
 // https://github.com/tashi-2004/2D-Line-Drawing-Algorithms/blob/main/Header.h
 void drawLine2D(int x0, int y0, int x1, int y1, int max_y, int max_x, int statsWidth)
 {
+    // czary
     int dx = std::abs(x1 - x0);
     int dy = std::abs(y1 - y0);
     int xi = (x0 < x1) ? 1 : -1;
@@ -147,7 +163,7 @@ void drawEnvironmentBorder(const ViewState &widok,
     const double sz = scale_z;
     // 2^3 = 8 wierzchołków sześcianu
     // kazdy ma 3 koordynaty, x, y, z
-    // 000, 100, 110, 010, 001, 101, 111, 011 
+    // 000, 001, 010, 011, 100, 101, 110, 111
     const double corners[8][3] = {
         {-xi, -yi, -sz},
         {xi, -yi, -sz},
@@ -280,7 +296,6 @@ int rysuj3d(Srodowisko &ekoSystem)
                     if (rodzaj == PUSTKA)
                         continue;
                     int color = 7;
-                    
 
                     switch (rodzaj)
                     {
@@ -299,69 +314,66 @@ int rysuj3d(Srodowisko &ekoSystem)
                     default:
                         break;
                     }
-                
 
-                double x = (((i + 0.5) / grid_x) * 2.0 - 1.0) * scale_x;
-                double y = (((j + 0.5) / grid_y) * 2.0 - 1.0) * scale_y;
-                double z = (((k + 0.5) / grid_z) * 2.0 - 1.0) * scale_z;
-                char symbol = ekoSystem.symbolNiszy(i, j, k);
+                    double x = (((i + 0.5) / grid_x) * 2.0 - 1.0) * scale_x;
+                    double y = (((j + 0.5) / grid_y) * 2.0 - 1.0) * scale_y;
+                    double z = (((k + 0.5) / grid_z) * 2.0 - 1.0) * scale_z;
+                    char symbol = ekoSystem.symbolNiszy(i, j, k);
 
-                x += widok.offset_x;
-                y += widok.offset_y;
-                z += widok.offset_z;
+                    x += widok.offset_x;
+                    y += widok.offset_y;
+                    z += widok.offset_z;
 
-                // rotate a nie transform, bo zalezy nam takze na kolorze i symbolu
-                // a zwykłego transformPoint uzywamy od prostych punktow, koloru bialego z ikonką #
-                Point3D r = rotate_x(x, y, z, widok.angle_x, color, symbol);
-                r = rotate_y(r.x, r.y, r.z, widok.angle_y, r.color, r.symbol);
-                r = rotate_z(r.x, r.y, r.z, widok.angle_z, r.color, r.symbol);
-                rotated_points.push_back(r);
+                    Point3D r = rotate_x(x, y, z, widok.angle_x, color, symbol);
+                    r = rotate_y(r.x, r.y, r.z, widok.angle_y, r.color, r.symbol);
+                    r = rotate_z(r.x, r.y, r.z, widok.angle_z, r.color, r.symbol);
+                    rotated_points.push_back(r);
+                }
             }
         }
-    }
 
-    // Algorytm malarza (sortowanie malejąco po osi Z)
-    // udawana głębia
-    // https://pl.wikipedia.org/wiki/Algorytm_malarza
-    std::sort(rotated_points.begin(), rotated_points.end(),
-              [](const Point3D &a, const Point3D &b)
-              {
-                  return a.z > b.z;
-              });
+        // Algorytm malarza (sortowanie malejąco po osi Z)
+        // udawana głębia
+        // https://pl.wikipedia.org/wiki/Algorytm_malarza
+        std::sort(rotated_points.begin(), rotated_points.end(),
+                  [](const Point3D &a, const Point3D &b)
+                  {
+                      return a.z > b.z;
+                  });
 
-    // Rysowanie
-    for (const auto &p : rotated_points)
-    {
-        int px, py;
-        project(p.x, p.y, p.z, display_size, center_x, center_y, max_scale, px, py);
-
-        if (px >= 0 && px < max_x && py >= 0 && py < max_y)
+        // Rysowanie
+        for (const auto &p : rotated_points)
         {
-            mvaddch(py, px, p.symbol | COLOR_PAIR(p.color));
+            int px, py;
+            project(p.x, p.y, p.z, display_size, center_x, center_y, max_scale, px, py);
+
+            if (px >= 0 && px < max_x && py >= 0 && py < max_y)
+            {
+                mvaddch(py, px, p.symbol | COLOR_PAIR(p.color));
+            }
         }
+
+        if (widok.obwodka)
+            drawEnvironmentBorder(widok,
+                                  scale_x, scale_y, scale_z,
+                                  display_size, center_x, center_y,
+                                  max_scale, max_y, max_x, statsWidth);
+
+        if (widok.obrotAutomatyczny)
+        {
+            // na oko wartosci
+            widok.angle_x += 0.04;
+            widok.angle_y += 0.03;
+            widok.angle_z += 0.02;
+        }
+
+        if (wykonajKrok)
+            ekoSystem++;
+
+        refresh();
+        std::this_thread::sleep_for(std::chrono::milliseconds(50));
     }
 
-    if (widok.obwodka)
-        drawEnvironmentBorder(widok,
-                              scale_x, scale_y, scale_z,
-                              display_size, center_x, center_y,
-                              max_scale, max_y, max_x, statsWidth);
-
-    if (widok.obrotAutomatyczny)
-    {
-        // na oko wartosci
-        widok.angle_x += 0.04;
-        widok.angle_y += 0.03;
-        widok.angle_z += 0.02;
-    }
-
-    if (wykonajKrok)
-        ekoSystem++;
-
-    refresh();
-    std::this_thread::sleep_for(std::chrono::milliseconds(50));
-}
-
-endwin();
-return 0;
+    endwin();
+    return 0;
 }
