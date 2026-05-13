@@ -241,6 +241,8 @@ int rysuj3d(Srodowisko &ekoSystem)
     double scale_z = 1.0;
     double display_size = 50.0;
     double max_scale = 1.0;
+    std::ofstream plik("symulacja.txt");
+
 
     ViewState widok;
 
@@ -399,12 +401,17 @@ int rysuj3d(Srodowisko &ekoSystem)
             widok.angle_z += 0.02;
         }
 
-        if (wykonajKrok)
+        if (wykonajKrok){
+            plik << "Krok symulacji: " << ekoSystem.numerTury << endl;
+            plik << ekoSystem.doTekstu();
             ekoSystem++;
+
+        }
 
         refresh();
         std::this_thread::sleep_for(std::chrono::milliseconds(50));
     }
+    plik.close();
 
     nodelay(stdscr, FALSE);
     return 0;

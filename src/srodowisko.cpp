@@ -308,7 +308,7 @@ std::string Srodowisko::doTekstu() const
 
     tekst += "\n Glony " + std::string(1, glon) + " : " + std::to_string(liczba(GLON)) +
              "\n Grzyby " + std::string(1, grzyb) + " : " + std::to_string(liczba(GRZYB)) +
-             "\nBakterie " + std::string(1, bakteria) + " : " + std::to_string(liczba(BAKTERIA)) +
+             "\n Bakterie " + std::string(1, bakteria) + " : " + std::to_string(liczba(BAKTERIA)) +
              "\n Martwe " + std::string(1, pusta) + " : " + std::to_string(liczba(TRUP)) + '\n';
 
     return tekst;

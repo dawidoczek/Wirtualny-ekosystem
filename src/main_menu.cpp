@@ -181,7 +181,7 @@ void rysujMenuGlowne(int zaznaczony)
     int max_x = getmaxx(stdscr);
 
     // const char *tytul = "WIRTUALNY EKOSYSTEM";
-    const char *opis = "Strzalki: wybor | Enter: zatwierdz | q: wyjscie";
+    const char *opis = "Strzalki: wybor | Enter/spacja: zatwierdz | q: wyjscie";
     int dlugoscLinii = std::strlen(tytulASCII[0]);
     int start_x = std::max(2, (max_x - dlugoscLinii) / 2);
     for (int i = 0; i < liczbaLiniiTytulu; ++i)
@@ -421,7 +421,7 @@ WynikMenuGlownego pokazMenuGlowne()
             zaznaczony = (zaznaczony + 1) % 3;
         else if (klawisz == 'q' || klawisz == 'Q' || klawisz == 27)
             return WynikMenuGlownego::Wyjscie;
-        else if (klawisz == '\n' || klawisz == '\r' || klawisz == KEY_ENTER)
+        else if (klawisz == '\n' || klawisz == '\r' || klawisz == KEY_ENTER || klawisz == ' ')
         {
             if (zaznaczony == 0)
                 return WynikMenuGlownego::StartSymulacji;
