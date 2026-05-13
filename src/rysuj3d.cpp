@@ -102,14 +102,14 @@ void drawStatsPanel(const Srodowisko &ekoSystem, int max_y)
     };
 
     // attr on, ustawia kolor i pogrubienie, a attroff wyłącza
-    attron(A_BOLD | COLOR_PAIR(7));
+    attron(A_BOLD | COLOR_PAIR(57));
     printLine("STATYSTYKI");
     printLine("TURA: %lu", ekoSystem.numerTury);
     printLine("GLON  : %lu", ekoSystem.liczba(GLON));
     printLine("GRZYB : %lu", ekoSystem.liczba(GRZYB));
     printLine("BAKT  : %lu", ekoSystem.liczba(BAKTERIA));
     printLine("TRUP  : %lu", ekoSystem.liczba(TRUP));
-    attroff(A_BOLD | COLOR_PAIR(7));
+    attroff(A_BOLD | COLOR_PAIR(57));
     y++;
     printLine("SPACJA - inspekcja");
     printLine("ENTER - krok symulacji");
@@ -125,7 +125,7 @@ Point3D transformPoint(double x, double y, double z, const ViewState &widok)
     y += widok.offset_y;
     z += widok.offset_z;
 
-    Point3D r = rotate_x(x, y, z, widok.angle_x, 7, '#');
+    Point3D r = rotate_x(x, y, z, widok.angle_x, 57, '#');
     r = rotate_y(r.x, r.y, r.z, widok.angle_y, r.color, r.symbol);
     r = rotate_z(r.x, r.y, r.z, widok.angle_z, r.color, r.symbol);
     return r;
@@ -210,7 +210,7 @@ void drawEnvironmentBorder(const ViewState &widok,
         project(r.x, r.y, r.z, display_size, center_x, center_y, max_scale, projected[i][0], projected[i][1]);
     }
     // kolorki znowu
-    attron(COLOR_PAIR(7) | A_BOLD);
+    attron(COLOR_PAIR(57) | A_BOLD);
     for (int e = 0; e < 12; ++e)
     {
         int a = edges[e][0];
@@ -218,7 +218,7 @@ void drawEnvironmentBorder(const ViewState &widok,
         // rysuj od wierzchloka do wierzchloka
         drawLine2D(projected[a][0], projected[a][1], projected[b][0], projected[b][1], max_y, max_x, statsWidth);
     }
-    attroff(COLOR_PAIR(7) | A_BOLD);
+    attroff(COLOR_PAIR(57) | A_BOLD);
 }
 
 int rysuj3d(Srodowisko &ekoSystem)
@@ -226,13 +226,11 @@ int rysuj3d(Srodowisko &ekoSystem)
     nodelay(stdscr, TRUE);
     keypad(stdscr, TRUE);
 
-    start_color();
-    use_default_colors();
-    init_pair(1, COLOR_GREEN, -1);   // Glon
-    init_pair(2, COLOR_MAGENTA, -1); // Grzyb
-    init_pair(3, COLOR_CYAN, -1);    // Bakteria
-    init_pair(6, COLOR_RED, -1);     // Trup
-    init_pair(7, COLOR_WHITE, -1);   // Interfejs i granice
+    init_pair(51, COLOR_GREEN, -1);   // Glon
+    init_pair(52, COLOR_MAGENTA, -1); // Grzyb
+    init_pair(53, COLOR_CYAN, -1);    // Bakteria
+    init_pair(56, COLOR_RED, -1);     // Trup
+    init_pair(57, COLOR_WHITE, -1);   // Interfejs i granice
 
     int grid_x = static_cast<int>(ekoSystem.wiersze);
     int grid_y = static_cast<int>(ekoSystem.kolumny);
@@ -251,8 +249,10 @@ int rysuj3d(Srodowisko &ekoSystem)
         clear();
 
         int ch = getch();
-        if (ch == 'q' || ch == 'Q')
+        if (ch == 'q' || ch == 'Q'){
+            attrset(A_NORMAL);
             break;
+        }
         bool wykonajKrok = (ch == '\n' || ch == '\r' || ch == KEY_ENTER);
 
         if (ch == ' ')
@@ -328,21 +328,21 @@ int rysuj3d(Srodowisko &ekoSystem)
                     RodzajMieszkanca rodzaj = ekoSystem.rodzajNiszy(i, j, k);
                     if (rodzaj == PUSTKA)
                         continue;
-                    int color = 7;
+                    int color = 57;
 
                     switch (rodzaj)
                     {
                     case GLON:
-                        color = 1;
+                        color = 51;
                         break;
                     case GRZYB:
-                        color = 2;
+                        color = 52;
                         break;
                     case BAKTERIA:
-                        color = 3;
+                        color = 53;
                         break;
                     case TRUP:
-                        color = 6;
+                        color = 56;
                         break;
                     default:
                         break;
