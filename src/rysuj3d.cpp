@@ -174,7 +174,6 @@ void drawEnvironmentBorder(const ViewState &widok,
     const double sz = scale_z;
     // 2^3 = 8 wierzchołków sześcianu
     // kazdy ma 3 koordynaty, x, y, z
-    // 000, 001, 010, 011, 100, 101, 110, 111
     const double corners[8][3] = {
         {-xi, -yi, -sz},
         {xi, -yi, -sz},

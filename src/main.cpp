@@ -36,8 +36,8 @@ static void losowoRozmiesc(Srodowisko &ekoSystem,
 
 int main()
 {
-    Srodowisko ekoSystem(10, 5, 5);
-
+    Srodowisko ekoSystem(5, 5, 5);
+    // TODO - dodaj menu główne z wyborem rozmiaru środowiska, ilości organizmów początkowych i ew. innych parametrów
     losowoRozmiesc(ekoSystem, 20, GLON);
     losowoRozmiesc(ekoSystem, 20, GRZYB);
     losowoRozmiesc(ekoSystem, 20, BAKTERIA);
