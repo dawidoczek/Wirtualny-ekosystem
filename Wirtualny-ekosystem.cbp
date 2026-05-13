@@ -40,7 +40,7 @@
 			<Add library="lib/PDCurses.a" />
 		</Linker>
 		<Unit filename=".gitignore" />
-		<Unit filename="IIST2.5Programowanie_obiektowe_w_C++_lab_tylko_projekt.pdf" />
+		<Unit filename="CMakeLists.txt" />
 		<Unit filename="Makefile" />
 		<Unit filename="README.md" />
 		<Unit filename="include/curses.h" />
