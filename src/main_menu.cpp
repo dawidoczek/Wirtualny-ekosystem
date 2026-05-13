@@ -70,6 +70,7 @@ const char* tytulASCII[] = {
 };
 
 const int liczbaLiniiTytulu = sizeof(tytulASCII) / sizeof(tytulASCII[0]);
+int liczbakolorow = 6;
 
 std::string obetnij(std::string tekst)
 {
@@ -193,7 +194,7 @@ void rysujMenuGlowne(int zaznaczony)
         {
             // Magia gradientu: (wiersz + kolumna) modulo ilość kolorów
             // Dzięki temu kolory przesuwają się ukośnie!
-            int indeksKoloru = ((i + j) % 6) + 1; 
+            int indeksKoloru = (((i * 2) + j) % liczbakolorow) + 1;
 
             // Włączamy odpowiedni kolor z palety
             attron(COLOR_PAIR(indeksKoloru));
@@ -232,9 +233,8 @@ void rysujMenuUstawien(const KonfiguracjaStartowa &konfiguracja,
     getmaxyx(stdscr, max_y, max_x);
 
     mvprintw(1, 2, "USTAWIENIA");
-    mvprintw(2, 2, "Strzalki: wybor | Enter: edycja | q: powrot");
 
-    const int startY = 4;
+    const int startY = 3;
     int indeks = 0;
     auto wiersz = [&](const std::string &etykieta, const std::string &wartosc)
     {
@@ -257,8 +257,6 @@ void rysujMenuUstawien(const KonfiguracjaStartowa &konfiguracja,
     wiersz("znakBakteria", std::string(1, ustawienia.znakBakteria));
     wiersz("znakTrup", std::string(1, ustawienia.znakTrup));
     wiersz("znakNieokreslony", std::string(1, ustawienia.znakNieokreslony));
-    wiersz("znakPustaNisza", std::string(1, ustawienia.znakPustaNisza));
-    wiersz("znakSeparator", std::string(1, ustawienia.znakSeparator));
     wiersz("glonZycieMin", std::to_string(ustawienia.glonZycieMin));
     wiersz("glonZycieMax", std::to_string(ustawienia.glonZycieMax));
     wiersz("glonKosztPotomka", std::to_string(ustawienia.glonKosztPotomka));
@@ -317,45 +315,39 @@ void edytujWybranyWiersz(int wybor,
         pobierzZnak("Nowy znak nieokreslony: ", ustawienia.znakNieokreslony);
         break;
     case 11:
-        pobierzZnak("Nowy znak pustej niszy: ", ustawienia.znakPustaNisza);
-        break;
-    case 12:
-        pobierzZnak("Nowy znak separatora: ", ustawienia.znakSeparator);
-        break;
-    case 13:
         pobierzLiczbe("Nowe glonZycieMin: ", ustawienia.glonZycieMin, false);
         break;
-    case 14:
+    case 12:
         pobierzLiczbe("Nowe glonZycieMax: ", ustawienia.glonZycieMax, false);
         break;
-    case 15:
+    case 13:
         pobierzLiczbe("Nowe glonKosztPotomka: ", ustawienia.glonKosztPotomka, false);
         break;
-    case 16:
+    case 14:
         pobierzLiczbe("Nowe glonLimitPosilkow: ", ustawienia.glonLimitPosilkow, false);
         break;
-    case 17:
+    case 15:
         pobierzLiczbe("Nowe grzybZycieMin: ", ustawienia.grzybZycieMin, false);
         break;
-    case 18:
+    case 16:
         pobierzLiczbe("Nowe grzybZycieMax: ", ustawienia.grzybZycieMax, false);
         break;
-    case 19:
+    case 17:
         pobierzLiczbe("Nowe grzybKosztPotomka: ", ustawienia.grzybKosztPotomka, false);
         break;
-    case 20:
+    case 18:
         pobierzLiczbe("Nowe grzybLimitPosilkow: ", ustawienia.grzybLimitPosilkow, false);
         break;
-    case 21:
+    case 19:
         pobierzLiczbe("Nowe bakteriaZycieMin: ", ustawienia.bakteriaZycieMin, false);
         break;
-    case 22:
+    case 20:
         pobierzLiczbe("Nowe bakteriaZycieMax: ", ustawienia.bakteriaZycieMax, false);
         break;
-    case 23:
+    case 21:
         pobierzLiczbe("Nowe bakteriaKosztPotomka: ", ustawienia.bakteriaKosztPotomka, false);
         break;
-    case 24:
+    case 22:
         pobierzLiczbe("Nowe bakteriaLimitPosilkow: ", ustawienia.bakteriaLimitPosilkow, false);
         break;
     default:
@@ -375,12 +367,34 @@ void uruchomInterfejsNcurses()
     curs_set(0);
     start_color();
     use_default_colors();
-    init_pair(1, COLOR_RED, -1);
-    init_pair(2, COLOR_YELLOW, -1);
-    init_pair(3, COLOR_GREEN, -1);
-    init_pair(4, COLOR_CYAN, -1);
-    init_pair(5, COLOR_BLUE, -1);
-    init_pair(6, COLOR_MAGENTA, -1);
+    
+   if (COLORS >= 256) {
+        int tecza256[] = {
+            196, 202, 208, 214, 220, 226, // Czerwony -> Żółty
+            190, 154, 118, 82,  46,       // Żółty -> Zielony
+            47,  48,  49,  50,  51,       // Zielony -> Cyjan
+            45,  39,  33,  27,  21,       // Cyjan -> Niebieski
+            57,  93,  129, 165, 201,      // Niebieski -> Magenta
+            199, 198, 197                 // Magenta -> Czerwony
+        };
+        
+        liczbakolorow = sizeof(tecza256) / sizeof(tecza256[0]);
+
+        // Rejestrujemy naszą nową, szeroką paletę w ncurses
+        for (int i = 0; i < liczbakolorow; ++i) {
+            init_pair(i + 1, tecza256[i], -1);
+        }
+    } 
+    else {
+        // Fallback: jeśli ktoś używa starego terminala, zostajemy przy 6 kolorach
+        init_pair(1, COLOR_RED, -1);
+        init_pair(2, COLOR_YELLOW, -1);
+        init_pair(3, COLOR_GREEN, -1);
+        init_pair(4, COLOR_CYAN, -1);
+        init_pair(5, COLOR_BLUE, -1);
+        init_pair(6, COLOR_MAGENTA, -1);
+        liczbakolorow = 6;
+    }
     ncursesAktywne = true;
 }
 
@@ -422,7 +436,7 @@ void pokazMenuUstawien(KonfiguracjaStartowa &konfiguracja)
 {
     UstawieniaSymulacji &ustawienia = UstawieniaSymulacji::pobierzUstawienia();
 
-    const int liczbaPolozen = 26;
+    const int liczbaPolozen = 24;
     int zaznaczony = 0;
 
 
@@ -436,9 +450,9 @@ void pokazMenuUstawien(KonfiguracjaStartowa &konfiguracja)
             zaznaczony = (zaznaczony + 1) % liczbaPolozen;
         else if (klawisz == 'q' || klawisz == 'Q' || klawisz == 27)
             return;
-        else if (klawisz == '\n' || klawisz == '\r' || klawisz == KEY_ENTER)
+        else if (klawisz == '\n' || klawisz == '\r' || klawisz == KEY_ENTER || klawisz == ' ')
         {
-            if (zaznaczony == 25)
+            if (zaznaczony == 23)
             {
                 if (ustawienia.zapiszDoPliku("ustawienia.txt"))
                     pokazKomunikat("Ustawienia zapisane do pliku!");
