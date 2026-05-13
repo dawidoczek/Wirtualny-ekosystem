@@ -178,8 +178,8 @@ bool pobierzZnak(const std::string &prompt, char &out)
 
 void rysujMenuGlowne(int zaznaczony)
 {
+    attrset(A_NORMAL);
     clear();
-
     int max_x = getmaxx(stdscr);
 
     // const char *tytul = "WIRTUALNY EKOSYSTEM";
@@ -228,6 +228,7 @@ void rysujMenuUstawien(const KonfiguracjaStartowa &konfiguracja,
                        const UstawieniaSymulacji &ustawienia,
                        int zaznaczony)
 {
+    attrset(A_NORMAL);
     clear();
 
     int max_y, max_x;
