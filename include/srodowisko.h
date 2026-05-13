@@ -8,6 +8,16 @@ class Nisza;
 class Mieszkaniec;
 class Sasiedztwo;
 
+struct KonfiguracjaStartowa
+{
+    unsigned int wiersze = 5;
+    unsigned int kolumny = 5;
+    unsigned int glebokosc = 5;
+    unsigned int glony = 20;
+    unsigned int grzyby = 20;
+    unsigned int bakterie = 20;
+};
+
 class Srodowisko
 {
 
@@ -69,3 +79,9 @@ public:
 
     static unsigned long pobierzAktualnaTure();
 };
+
+void losowoRozmiesc(Srodowisko &ekoSystem,
+                    unsigned int ile,
+                    RodzajMieszkanca rodzaj);
+
+void uruchomSymulacje(const KonfiguracjaStartowa &konfiguracja);

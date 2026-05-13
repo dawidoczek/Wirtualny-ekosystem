@@ -80,7 +80,7 @@ void project(double x, double y, double z, double display_size,
              int center_x, int center_y, double max_scale,
              int &out_x, int &out_y)
 {
-    double camera_distance = max_scale + 5.5; // offset 5.5 na sztywno
+    double camera_distance = max_scale + 4.5; // offset 4.5 na sztywno
     double factor = display_size / (z + camera_distance);
 
     out_x = static_cast<int>(x * factor * 2 + center_x);
@@ -223,9 +223,6 @@ void drawEnvironmentBorder(const ViewState &widok,
 
 int rysuj3d(Srodowisko &ekoSystem)
 {
-    initscr();
-    noecho();
-    curs_set(0);
     nodelay(stdscr, TRUE);
     keypad(stdscr, TRUE);
 
@@ -410,6 +407,6 @@ int rysuj3d(Srodowisko &ekoSystem)
         std::this_thread::sleep_for(std::chrono::milliseconds(50));
     }
 
-    endwin();
+    nodelay(stdscr, FALSE);
     return 0;
 }

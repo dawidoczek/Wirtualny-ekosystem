@@ -182,6 +182,35 @@ public:
         return true;
     }
 
+    bool zapiszDoPliku(const string &nazwaPliku = "ustawienia.txt")
+    {
+        ofstream plik(nazwaPliku);
+        if (!plik.is_open())
+            return false;
+
+        plik << "znakGlon;" << znakGlon << ",\n";
+        plik << "znakGrzyb;" << znakGrzyb << ",\n";
+        plik << "znakBakteria;" << znakBakteria << ",\n";
+        plik << "znakTrup;" << znakTrup << ",\n";
+        plik << "znakNieokreslony;" << znakNieokreslony << ",\n";
+        plik << "znakPustaNisza;" << znakPustaNisza << ",\n";
+        plik << "znakSeparator;" << znakSeparator << ",\n";
+        plik << "glonZycieMin;" << glonZycieMin << ",\n";
+        plik << "glonZycieMax;" << glonZycieMax << ",\n";
+        plik << "glonKosztPotomka;" << glonKosztPotomka << ",\n";
+        plik << "glonLimitPosilkow;" << glonLimitPosilkow << ",\n";
+        plik << "grzybZycieMin;" << grzybZycieMin << ",\n";
+        plik << "grzybZycieMax;" << grzybZycieMax << ",\n";
+        plik << "grzybKosztPotomka;" << grzybKosztPotomka << ",\n";
+        plik << "grzybLimitPosilkow;" << grzybLimitPosilkow << ",\n";
+        plik << "bakteriaZycieMin;" << bakteriaZycieMin << ",\n";
+        plik << "bakteriaZycieMax;" << bakteriaZycieMax << ",\n";
+        plik << "bakteriaKosztPotomka;" << bakteriaKosztPotomka << ",\n";
+        plik << "bakteriaLimitPosilkow;" << bakteriaLimitPosilkow<<",";
+        plik.close();
+        return true;
+    }
+
 private:
     UstawieniaSymulacji(){};
     UstawieniaSymulacji(UstawieniaSymulacji &);

@@ -9,6 +9,7 @@ include_directories(include)
 set(SOURCES
     src/GeneratorLosowy.cpp
     src/main.cpp
+    src/main_menu.cpp
     src/mieszkaniec.cpp
     src/nisza.cpp
     src/organizm.cpp

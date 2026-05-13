@@ -44,6 +44,7 @@
 		<Unit filename="Makefile" />
 		<Unit filename="README.md" />
 		<Unit filename="include/curses.h" />
+		<Unit filename="include/main_menu.h" />
 		<Unit filename="include/generatorLosowy.h" />
 		<Unit filename="include/klasa.h" />
 		<Unit filename="include/mieszkaniec.h" />
@@ -55,6 +56,7 @@
 		<Unit filename="include/ustawienia.h" />
 		<Unit filename="src/GeneratorLosowy.cpp" />
 		<Unit filename="src/main.cpp" />
+		<Unit filename="src/main_menu.cpp" />
 		<Unit filename="src/mieszkaniec.cpp" />
 		<Unit filename="src/nisza.cpp" />
 		<Unit filename="src/organizm.cpp" />
