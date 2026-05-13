@@ -66,8 +66,6 @@ const char* tytulASCII[] = {
     "888        888   Y88b  Y88b. .d88P Y88b  d88P    888     Y88b  d88P    888     888        888   \"   888 ",
     "8888888888 888    Y88b  \"Y88888P\"   \"Y8888P\"     888      \"Y8888P\"     888     8888888888 888       888 ",
     "                                                                                                        ",
-    "                                                                                                        ",
-    "                                                                                                        "
 };
 
 const int liczbaLiniiTytulu = sizeof(tytulASCII) / sizeof(tytulASCII[0]);
@@ -201,7 +199,7 @@ void rysujMenuGlowne(int zaznaczony)
             attron(COLOR_PAIR(indeksKoloru));
 
             // Wypisujemy pojedynczy znak w wyliczonym miejscu (X i Y rosną)
-            mvaddch(2 + i, start_x + j, tytulASCII[i][j]);
+            mvaddch(1 + i, start_x + j, tytulASCII[i][j]);
 
             // Wyłączamy kolor (dobra praktyka)
             attroff(COLOR_PAIR(indeksKoloru));

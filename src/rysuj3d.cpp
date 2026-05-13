@@ -250,7 +250,6 @@ int rysuj3d(Srodowisko &ekoSystem)
 
         int ch = getch();
         if (ch == 'q' || ch == 'Q'){
-            attrset(A_NORMAL);
             break;
         }
         bool wykonajKrok = (ch == '\n' || ch == '\r' || ch == KEY_ENTER);
