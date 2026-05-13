@@ -174,7 +174,7 @@ bool pobierzZnak(const std::string &prompt, char &out)
     return true;
 }
 
-void rysujMenuGlowne(int zaznaczony)
+void rysujMenuGlowne(int zaznaczony, int fazaKoloru)
 {
     attrset(A_NORMAL);
     clear();
@@ -193,7 +193,7 @@ void rysujMenuGlowne(int zaznaczony)
         {
             // Magia gradientu: (wiersz + kolumna) modulo ilość kolorów
             // Dzięki temu kolory przesuwają się ukośnie!
-            int indeksKoloru = (((i * 2) + j) % liczbakolorow) + 1;
+            int indeksKoloru = (((i * 2) + j + fazaKoloru) % liczbakolorow) + 1;
 
             // Włączamy odpowiedni kolor z palety
             attron(COLOR_PAIR(indeksKoloru));
@@ -369,11 +369,12 @@ void uruchomInterfejsNcurses()
     use_default_colors();
 
    if (COLORS >= 256) {
+        // https://github.com/fidian/ansi/blob/master/images/color-codes.png
         int tecza256[] = {
             196, 202, 208, 214, 220, 226, // Czerwony -> Żółty
             190, 154, 118, 82,  46,       // Żółty -> Zielony
-            47,  48,  49,  50,  51,       // Zielony -> Cyjan
-            45,  39,  33,  27,  21,       // Cyjan -> Niebieski
+            47,  48,  49,  50,  51,       // Zielony -> Cyan
+            45,  39,  33,  27,  21,       // Cyan -> Niebieski
             57,  93,  129, 165, 201,      // Niebieski -> Magenta
             199, 198, 197                 // Magenta -> Czerwony
         };
@@ -410,9 +411,13 @@ void zamknijInterfejsNcurses()
 WynikMenuGlownego pokazMenuGlowne()
 {
     int zaznaczony = 0;
+    int fazaKoloru = 0;
+    timeout(70);
+
     while (true)
     {
-        rysujMenuGlowne(zaznaczony);
+        rysujMenuGlowne(zaznaczony, fazaKoloru);
+        fazaKoloru = (fazaKoloru + 1) % std::max(1, liczbakolorow);
 
         int klawisz = getch();
         if (klawisz == KEY_UP)
@@ -420,9 +425,13 @@ WynikMenuGlownego pokazMenuGlowne()
         else if (klawisz == KEY_DOWN)
             zaznaczony = (zaznaczony + 1) % 3;
         else if (klawisz == 'q' || klawisz == 'Q' || klawisz == 27)
+        {
+            timeout(-1);
             return WynikMenuGlownego::Wyjscie;
+        }
         else if (klawisz == '\n' || klawisz == '\r' || klawisz == KEY_ENTER || klawisz == ' ')
         {
+            timeout(-1);
             if (zaznaczony == 0)
                 return WynikMenuGlownego::StartSymulacji;
             if (zaznaczony == 1)
