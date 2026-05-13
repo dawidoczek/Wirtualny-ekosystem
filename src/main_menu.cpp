@@ -1,5 +1,6 @@
 #ifdef _WIN32
 #include "PDcurses.h"
+#include <cstring>
 #elif defined(__linux__) || defined(__APPLE__)
 #include <ncurses.h>
 #endif
@@ -189,7 +190,7 @@ void rysujMenuGlowne(int zaznaczony)
     {
         // Obliczamy rzeczywistą długość aktualnej linii
         int dlugoscObecnejLinii = std::strlen(tytulASCII[i]);
-        
+
         for (int j = 0; j < dlugoscObecnejLinii; ++j)
         {
             // Magia gradientu: (wiersz + kolumna) modulo ilość kolorów
@@ -198,10 +199,10 @@ void rysujMenuGlowne(int zaznaczony)
 
             // Włączamy odpowiedni kolor z palety
             attron(COLOR_PAIR(indeksKoloru));
-            
+
             // Wypisujemy pojedynczy znak w wyliczonym miejscu (X i Y rosną)
             mvaddch(2 + i, start_x + j, tytulASCII[i][j]);
-            
+
             // Wyłączamy kolor (dobra praktyka)
             attroff(COLOR_PAIR(indeksKoloru));
         }
@@ -367,7 +368,7 @@ void uruchomInterfejsNcurses()
     curs_set(0);
     start_color();
     use_default_colors();
-    
+
    if (COLORS >= 256) {
         int tecza256[] = {
             196, 202, 208, 214, 220, 226, // Czerwony -> Żółty
@@ -377,14 +378,14 @@ void uruchomInterfejsNcurses()
             57,  93,  129, 165, 201,      // Niebieski -> Magenta
             199, 198, 197                 // Magenta -> Czerwony
         };
-        
+
         liczbakolorow = sizeof(tecza256) / sizeof(tecza256[0]);
 
         // Rejestrujemy naszą nową, szeroką paletę w ncurses
         for (int i = 0; i < liczbakolorow; ++i) {
             init_pair(i + 1, tecza256[i], -1);
         }
-    } 
+    }
     else {
         // Fallback: jeśli ktoś używa starego terminala, zostajemy przy 6 kolorach
         init_pair(1, COLOR_RED, -1);

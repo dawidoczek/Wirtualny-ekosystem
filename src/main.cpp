@@ -1,11 +1,20 @@
 #include "main_menu.h"
-#include <cstdlib>
+#ifdef _WIN32
+    #include <stdlib.h>
+#else
+    #include <cstdlib>
+#endif // _WIN32
+
 int main()
 {
     UstawieniaSymulacji::pobierzUstawienia().wczytajZPliku("ustawienia.txt");
     KonfiguracjaStartowa konfiguracja;
     // kolorki
-    setenv("TERM", "xterm-256color", 1);
+    #ifdef _WIN32
+        _putenv("TERM=xterm-256color");
+    #else
+        setenv("TERM", "xterm-256color", 1);
+    #endif // _WIN32
     uruchomInterfejsNcurses();
 
     while (true)
