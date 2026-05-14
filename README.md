@@ -19,6 +19,7 @@ Projekt symulacji ekosystemu rozwinięty do wersji 3D z interaktywną wizualizac
 - [donut c](https://www.a1k0n.net/2011/07/20/donut-math.html)
 - [cube spin](https://github.com/alt44s/cube-spin)
 - [2D-Line-Drawing-Algorithms](https://github.com/tashi-2004/2D-Line-Drawing-Algorithms/blob/main/Header.h)
+- [lolcat](https://github.com/busyloop/lolcat)
 
 ## Sterowanie w wizualizacji
 
@@ -34,6 +35,10 @@ Projekt symulacji ekosystemu rozwinięty do wersji 3D z interaktywną wizualizac
 - Środowisko zostało rozszerzone z 2D do 3D (wiersze, kolumny, głębokość).
 - Generator indeksów i logika sąsiedztwa obsługują układ 3D.
 - Wizualizacja została przeniesiona do renderera z biblioteki ncurses z auto obrotem bryły i panelem statystyk.
-- Symulacja działa krokowo: obrót jest ciągły (co 50ms), ale krok świata wykonuje się po kliknieciu `ENTER`.
+- Symulacja działa krokowo: obrót jest ciągły (co 50ms), ale krok świata wykonuje się po kliknieciu `ENTER/SPACJA`.
 - Dodano tryb inspekcji (pauza obrotu, ręczne przesuwanie i obracanie widoku).
 - Dodano przełączaną obwódkę sześcianu 
+- Dodano menu główne, wraz z animacją.
+- Menu ustawień, które zapisuje i wczytuje dane z/do `ustawienia.txt`
+- Zapisywanie symulacji do pliku `symulacja.txt`
+- Lepszy generator cyfr losowych
