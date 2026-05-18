@@ -74,7 +74,9 @@ void Bakteria::przyjmijZdobycz(Mieszkaniec *mieszkaniec)
     if (mieszkaniec != nullptr)
     {
         RodzajMieszkanca r = mieszkaniec->kimJestes();
-        if (r == GLON || r == GRZYB)
+        // błąd
+        // Bakteria może zjeść glona lub inną bakterie, ale nie grzyba
+        if (r == GLON || r == BAKTERIA)
             posilek();
         delete mieszkaniec;
     }
